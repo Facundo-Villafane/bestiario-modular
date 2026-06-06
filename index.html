@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bestiario Modular</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <header class="brand">
+          <div class="brand-mark">BM</div>
+          <div>
+            <h1>Bestiario Modular</h1>
+            <p>Creador de criaturas por partes, rasgos y comportamiento.</p>
+          </div>
+        </header>
+
+        <section class="panel">
+          <h2>Modo</h2>
+          <div class="mode-grid" id="modeGrid"></div>
+        </section>
+
+        <section class="panel">
+          <h2>Controles</h2>
+          <div class="button-stack">
+            <button class="primary" id="randomAllButton">Randomizar criatura</button>
+            <button id="randomUnlockedButton">Solo desbloqueados</button>
+            <button id="saveButton">Guardar criatura</button>
+            <button class="ghost" id="copyButton">Copiar ficha</button>
+            <button class="ghost" id="downloadButton">Descargar JSON</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Semilla</h2>
+          <textarea id="seedInput" rows="6" placeholder="Ej: criatura de pantano, insecto elegante, dragon subterraneo, guardian oceanico"></textarea>
+          <button id="expandSeedButton">Expandir desde semilla</button>
+          <div class="chips" id="seedChips"></div>
+        </section>
+      </aside>
+
+      <main class="workspace">
+        <section class="hero">
+          <div>
+            <p class="eyebrow">Generador de criaturas</p>
+            <h2>Crea una criatura unica combinando anatomia, materiales, sentidos y conducta.</h2>
+          </div>
+        </section>
+
+        <section class="result">
+          <div class="result-main">
+            <div class="section-title">
+              <div>
+                <p class="eyebrow">Ficha principal</p>
+                <h2 id="creatureName">Criatura sin generar</h2>
+              </div>
+              <button class="icon-button" id="favoriteButton" title="Favorito">☆</button>
+            </div>
+            <p id="creaturePitch" class="pitch">Pulsa randomizar para generar una criatura modular.</p>
+            <div class="stat-grid" id="statGrid"></div>
+          </div>
+          <div class="silhouette" id="silhouette" aria-hidden="true">
+            <div class="antenna"></div>
+            <div class="head"></div>
+            <div class="torso"></div>
+            <div class="limb limb-a"></div>
+            <div class="limb limb-b"></div>
+            <div class="tail"></div>
+          </div>
+        </section>
+
+        <section class="parts-grid" id="partsGrid"></section>
+      </main>
+
+      <aside class="history">
+        <section class="panel history-panel">
+          <div class="section-title">
+            <h2>Guardadas</h2>
+            <span id="savedCount">0</span>
+          </div>
+          <input id="searchInput" type="search" placeholder="Buscar criatura">
+          <div class="history-list" id="historyList"></div>
+        </section>
+      </aside>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>
