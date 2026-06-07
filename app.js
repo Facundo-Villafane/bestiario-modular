@@ -507,6 +507,7 @@ const elements = {
   seedChips: $("#seedChips"),
   creatureName: $("#creatureName"),
   creaturePitch: $("#creaturePitch"),
+  copyDescriptionButton: $("#copyDescriptionButton"),
   favoriteButton: $("#favoriteButton"),
   statGrid: $("#statGrid"),
   partsGrid: $("#partsGrid"),
@@ -536,6 +537,7 @@ function bindEvents() {
   });
   elements.saveButton.addEventListener("click", saveCreature);
   elements.copyButton.addEventListener("click", () => copyText(buildSheet(creature), "Ficha copiada."));
+  elements.copyDescriptionButton.addEventListener("click", () => copyText(creature.pitch, "Descripcion copiada."));
   elements.downloadButton.addEventListener("click", downloadJson);
   elements.favoriteButton.addEventListener("click", () => {
     favorite = !favorite;
@@ -815,7 +817,19 @@ ${modules.map((module) => `- ${module.title}: ${item.parts[module.id]}`).join("\
 }
 
 async function copyText(text, message) {
-  await navigator.clipboard.writeText(text);
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.left = "-9999px";
+    document.body.append(area);
+    area.select();
+    document.execCommand("copy");
+    area.remove();
+  }
   toast(message);
 }
 

@@ -240,6 +240,11 @@ p {
   gap: 12px;
 }
 
+.title-actions {
+  display: flex;
+  gap: 6px;
+}
+
 .icon-button {
   display: grid;
   place-items: center;
