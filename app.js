@@ -224,6 +224,217 @@ const modules = [
   }
 ];
 
+const extraOptions = {
+  archetype: [
+    "equino cavernario", "anfibio de sal", "ave carroñera muda", "felino micotico", "mantarraya terrestre",
+    "lagarto de cristal", "larva gigante domesticable", "primado nocturno", "pez fosil ambulante", "colonia de crustaceos unidos"
+  ],
+  body: [
+    "cuerpo alto sostenido por tendones tensos", "vientre translucido con organos visibles", "torax blindado y cintura muy estrecha",
+    "cuerpo dividido en modulos que se separan", "silueta jorobada con hombros enormes", "cuerpo de manta con patas ocultas",
+    "estructura hueca que silba con el viento", "espalda cóncava que acumula agua", "cuerpo cubierto de nudos musculares",
+    "forma de gota invertida con base pesada"
+  ],
+  head: [
+    "cabeza en forma de pala con ojos hundidos", "rostro de pico ancho cubierto de cicatrices naturales",
+    "craneo dividido por una cresta de cartilago", "cabeza sin mandibula visible", "hocico doble con canales de respiracion",
+    "frente abovedada con placas moviles", "cara asimetrica con un lado blindado", "mandibulas cubiertas por bigotes rigidos"
+  ],
+  eyes: [
+    "ojos lechosos que miran en direcciones opuestas", "pupilas horizontales como rendijas de cerradura",
+    "ojos ocultos bajo piel fina", "pequeños puntos luminosos alrededor de la boca", "un anillo de ojos en el cuello",
+    "ojos que reflejan el cielo aunque este bajo tierra", "cuatro ojos principales y muchos falsos", "vision ciega basada en humedad"
+  ],
+  mouth: [
+    "placas bucales que se abren como persianas", "dientes de queratina reemplazables", "mandibula elastica que se desencaja",
+    "boca vertical en el rostro", "tubo alimenticio que sale del pecho", "lengua plana usada como sensor",
+    "dos bocas pequeñas en lugar de una grande", "dientes externos que nunca cierran del todo"
+  ],
+  skin: [
+    "piel cubierta de liquenes simbioticos", "escamas transparentes con bordes oscuros", "pelaje largo que retiene semillas",
+    "placas negras con brillo aceitoso", "membranas secas como pergamino", "piel granulada similar a piedra volcanica",
+    "capa de algas vivas adheridas", "quitina blanca con manchas de oxido", "piel azulada cubierta de cicatrices circulares",
+    "caparazon flexible parecido a cuero viejo"
+  ],
+  limbs: [
+    "patas delanteras muy largas con muñecas dobles", "ocho patas cortas que se mueven por oleadas",
+    "brazos excavadores con dedos planos", "patas finas terminadas en ventosas", "piernas con membranas entre articulaciones",
+    "garras curvas pensadas para colgarse", "extremidades que se repliegan dentro del cuerpo", "manos con tres dedos desiguales"
+  ],
+  tail: [
+    "cola con una pala de hueso al final", "apendice doble que marca rastros en el suelo", "cola cubierta de sensores tactiles",
+    "filamento que vibra cuando detecta presas", "cola corta con bolsa de grasa", "cola segmentada como cadena",
+    "cola que se desprende y sigue moviendose", "apendice dorsal que parece una segunda cabeza"
+  ],
+  extras: [
+    "crestas de sal que se disuelven con lluvia", "bolsas transparentes llenas de esporas", "dientes decorativos fuera de la boca",
+    "patrones de muda como mapas topograficos", "pequeñas aletas respiratorias en las patas", "nidos de insectos aliados en el cuello",
+    "placas que producen chasquidos de comunicacion", "membranas que cambian de tension segun el clima"
+  ],
+  movement: [
+    "avanza hundiendo y levantando el cuerpo como una bomba", "se desliza sobre una pelicula de mucosa",
+    "salta hacia atras antes de avanzar", "camina apoyando solo tres patas a la vez", "se cuelga de superficies verticales",
+    "gira el torso antes de cambiar de direccion", "se desplaza en zigzag para confundir rastros", "permanece inmovil y luego acelera de golpe"
+  ],
+  senses: [
+    "detecta cambios de salinidad", "percibe sombras aunque no vea luz", "huele sangre vieja en piedra",
+    "nota variaciones minimas de humedad", "escucha raices creciendo", "distingue individuos por su pulso",
+    "detecta metales enterrados", "siente corrientes de aire con la cola", "percibe feromonas de miedo",
+    "recuerda rutas por sabor del suelo"
+  ],
+  behavior: [
+    "evita conflictos salvo si protegen crias", "rodea a intrusos durante horas", "se comunica golpeando piedras",
+    "prefiere observar antes de acercarse", "es social solo durante la muda", "abandona comida como señuelo",
+    "sigue cursos de agua aunque esten secos", "esconde partes de su cuerpo para parecer menor",
+    "forma alianzas temporales con otras especies", "se vuelve dócil si se le ofrece sal"
+  ],
+  habitat: [
+    "manglares de raices negras", "glaciares con cuevas azules", "azoteas abandonadas cubiertas de nidos",
+    "selvas de hojas gigantes", "pantanos salobres", "barrancos de arcilla roja", "volcanes apagados",
+    "acantilados con niebla constante", "alcantarillas colonizadas por musgo", "cenotes profundos",
+    "bosques de bambu seco", "playas de vidrio molido", "templos hundidos", "llanuras de pasto plateado"
+  ],
+  diet: [
+    "salitre de rocas costeras", "larvas escondidas en madera", "algas negras", "flores nocturnas",
+    "musgo mineralizado", "pequeños crustaceos terrestres", "sangre seca de presas antiguas",
+    "resina de arboles enfermos", "semillas duras que tritura con paciencia", "huevos abandonados",
+    "hongos que crecen en metal", "agua atrapada en hojas"
+  ],
+  defense: [
+    "expulsa una nube de sal que irrita ojos", "se cubre con placas levantadas como cuchillas",
+    "lanza un zumbido que desorienta", "libera olor a depredador mayor", "se parte visualmente en falsos cuerpos",
+    "oscurece su piel para absorber calor", "golpea el suelo para llamar a su colonia", "vomita una espuma amarga",
+    "usa la cola para borrar sus huellas", "enciende puntos luminosos para cegar"
+  ],
+  oddity: [
+    "adopta el color del ultimo lugar donde durmio", "sus huesos crecen en espiral", "no envejece mientras este mojada",
+    "solo se reproduce despues de incendios", "puede vivir meses sin cerrar los ojos", "cada individuo tiene una marca irrepetible",
+    "su canto atrae lluvia fina", "muda la piel en forma de mapa", "aprende caminos siguiendo estrellas",
+    "su cuerpo genera calor cuando esta asustado"
+  ],
+  palette: [
+    "verde botella, cobre viejo y crema", "negro humedo con lineas celestes", "gris ceniza y rojo arcilla",
+    "azul profundo con blanco calcico", "amarillo seco y marron quemado", "verde algas y plata opaca",
+    "violeta hematoma y hueso", "arena, coral viejo y azul verdoso", "negro azulado con puntos leche",
+    "gris pizarra y naranja oxidado"
+  ],
+  scale: [
+    "del tamaño de un cuervo", "como una mochila pesada", "tan alto como una mesa", "del largo de una escalera",
+    "del tamaño de un ternero", "como una persona de pie", "puede caber en una caja grande",
+    "tan ancho como una cama", "adulto pequeño pero con cola enorme", "varia entre cachorro y adulto segun humedad"
+  ]
+};
+
+Object.entries(extraOptions).forEach(([id, options]) => {
+  const module = modules.find((item) => item.id === id);
+  if (module) module.values.push(...options);
+});
+
+const habitatChoices = [
+  { id: "any", label: "Cualquiera" },
+  { id: "swamp", label: "Pantano" },
+  { id: "forest", label: "Bosque" },
+  { id: "cave", label: "Cueva" },
+  { id: "desert", label: "Desierto" },
+  { id: "ocean", label: "Oceanico" },
+  { id: "mountain", label: "Montaña" },
+  { id: "ruins", label: "Ruinas" },
+  { id: "urban", label: "Urbano abandonado" },
+  { id: "volcanic", label: "Volcanico" }
+];
+
+const habitatProfiles = {
+  swamp: {
+    habitat: ["pantanos de agua negra", "pantanos salobres", "manglares de raices negras", "costas de barro brillante"],
+    archetype: ["mamifero anfibio", "anfibio transparente", "molusco terrestre", "planta depredadora"],
+    skin: ["piel humeda con manchas iridiscentes", "barro endurecido que se regenera", "capa de algas vivas adheridas"],
+    limbs: ["patas palmeadas con uñas de piedra", "patas finas terminadas en ventosas", "tentaculos musculares con dedos"],
+    movement: ["se arrastra y salta de golpe", "se desliza sobre una pelicula de mucosa", "nada en aire humedo"],
+    senses: ["detecta cambios de salinidad", "nota variaciones minimas de humedad", "percibe agua a kilometros"],
+    diet: ["algas negras", "raices fermentadas", "peces pequeños atrapados en charcos"],
+    defense: ["se cubre con barro toxico", "vomita una espuma amarga", "libera olor a depredador mayor"],
+    palette: ["verde musgo, hueso y negro humedo", "verde algas y plata opaca", "negro humedo con lineas celestes"]
+  },
+  forest: {
+    habitat: ["bosques de niebla baja", "selvas de hojas gigantes", "bosques de bambu seco", "bosques quemados que rebrotan"],
+    archetype: ["hongo ambulante", "planta depredadora", "felino micotico", "herbivoro gigante"],
+    skin: ["pelaje corto con musgo", "corteza viva con savia oscura", "piel cubierta de liquenes simbioticos"],
+    extras: ["antenas que imitan ramas", "pelaje largo que retiene semillas", "sacos de polen defensivo"],
+    movement: ["trepa usando la boca", "se cuelga de superficies verticales", "avanza como si midiera el terreno"],
+    senses: ["lee vibraciones en plantas", "escucha raices creciendo", "recuerda rutas por sabor del suelo"],
+    diet: ["savia dulce", "larvas escondidas en madera", "frutas que solo abre con sus cuernos"],
+    palette: ["marron corteza y verde acido", "verde botella, cobre viejo y crema", "ambar, cobre y verde seco"]
+  },
+  cave: {
+    habitat: ["cuevas con raices colgantes", "arrecifes subterraneos", "minas inundadas", "cenotes profundos"],
+    archetype: ["criatura de cueva", "ser mineral vivo", "pez fosil ambulante", "depredador nocturno"],
+    eyes: ["sin ojos visibles", "cuencas vacias que perciben calor", "vision ciega basada en humedad"],
+    skin: ["membrana transparente", "cristales pequeños incrustados", "piel granulada similar a piedra volcanica"],
+    movement: ["excava y emerge bajo presion", "se desplaza por vibraciones del suelo", "permanece inmovil y luego acelera de golpe"],
+    senses: ["escucha cambios de presion", "detecta metales enterrados", "huele sangre vieja en piedra"],
+    diet: ["minerales blandos", "hongos que crecen en metal", "musgo mineralizado"],
+    palette: ["gris mineral con vetas doradas", "negro mate con brillo nacarado", "gris pizarra y naranja oxidado"]
+  },
+  desert: {
+    habitat: ["desiertos de sal fria", "barrancos de arcilla roja", "playas de vidrio molido", "llanuras de pasto plateado"],
+    archetype: ["anfibio de sal", "lagarto de cristal", "roedor acorazado", "ave carroñera muda"],
+    skin: ["escamas secas como ceramica", "caparazon de sal", "membranas secas como pergamino"],
+    movement: ["rueda cerrando su cuerpo", "se desplaza en zigzag para confundir rastros", "camina apoyando solo tres patas a la vez"],
+    senses: ["siente corrientes de aire con la cola", "ve el calor residual", "detecta cambios de salinidad"],
+    diet: ["salitre de rocas costeras", "arcilla humeda", "semillas duras que tritura con paciencia"],
+    defense: ["expulsa una nube de sal que irrita ojos", "oscurece su piel para absorber calor", "se camufla con patrones del suelo"],
+    palette: ["ocre, sal y azul palido", "amarillo seco y marron quemado", "gris ceniza y rojo arcilla"]
+  },
+  ocean: {
+    habitat: ["arrecifes subterraneos", "templos hundidos", "costas de barro brillante", "islas de piedra porosa"],
+    archetype: ["pez de aire", "molusco terrestre", "mantarraya terrestre", "crustaceo de bosque"],
+    skin: ["membrana transparente", "capa de algas vivas adheridas", "escamas transparentes con bordes oscuros"],
+    limbs: ["aletas que funcionan como manos", "patas palmeadas con uñas de piedra", "piernas con membranas entre articulaciones"],
+    tail: ["cola plana usada como timon", "racimo de vejigas flotantes", "saco de tinta seco"],
+    senses: ["percibe agua a kilometros", "escucha cambios de presion", "detecta cambios de salinidad"],
+    diet: ["sal y algas", "algas negras", "pequeños crustaceos terrestres"],
+    palette: ["azul profundo con blanco calcico", "turquesa profundo con manchas crema", "arena, coral viejo y azul verdoso"]
+  },
+  mountain: {
+    habitat: ["montañas con tormentas secas", "acantilados con niebla constante", "glaciares con cuevas azules"],
+    archetype: ["reptil plumado", "ave sin vuelo", "equino cavernario", "guardian territorial"],
+    skin: ["plumas rigidas como hojas", "lana aceitosa repelente al agua", "piel azulada cubierta de cicatrices circulares"],
+    movement: ["planea de sombra en sombra", "camina con pausas muy calculadas", "salta hacia atras antes de avanzar"],
+    senses: ["siente campos magneticos", "ve el calor residual", "siente corrientes de aire con la cola"],
+    defense: ["emite un chillido paralizante", "lanza un zumbido que desorienta", "usa descargas electricas leves"],
+    palette: ["marfil con sombras azuladas", "azul profundo con blanco calcico", "gris mineral con vetas doradas"]
+  },
+  ruins: {
+    habitat: ["ruinas cubiertas de liquen", "templos hundidos", "jardines abandonados", "volcanes apagados"],
+    archetype: ["guardian territorial", "parasito simbiotico", "ser mineral vivo", "bestia domestica rara"],
+    skin: ["piel de aspecto porcelana agrietada", "corteza viva con savia oscura", "quitina blanca con manchas de oxido"],
+    behavior: ["protege objetos brillantes", "imita rutinas humanas", "marca territorio con patrones geometricos"],
+    oddity: ["cada muda deja una mascara perfecta", "muda la piel en forma de mapa", "aprende nombres pero no voces"],
+    diet: ["huesos viejos", "musgo mineralizado", "resina de arboles enfermos"],
+    palette: ["marfil con sombras azuladas", "gris pizarra y naranja oxidado", "ambar, cobre y verde seco"]
+  },
+  urban: {
+    habitat: ["azoteas abandonadas cubiertas de nidos", "alcantarillas colonizadas por musgo", "jardines abandonados"],
+    archetype: ["bestia domestica rara", "roedor acorazado", "parasito simbiotico", "ave carroñera muda"],
+    behavior: ["imita rutinas humanas", "sigue a viajeros sin atacar", "abandona comida como señuelo"],
+    skin: ["placas negras con brillo aceitoso", "pelaje corto con musgo", "caparazon flexible parecido a cuero viejo"],
+    senses: ["detecta mentiras por olor", "distingue individuos por su pulso", "recuerda sonidos durante años"],
+    diet: ["madera podrida", "huevos abandonados", "hongos que crecen en metal"],
+    defense: ["libera olor a depredador mayor", "usa la cola para borrar sus huellas", "se parte visualmente en falsos cuerpos"],
+    palette: ["negro azulado con puntos leche", "gris pizarra y naranja oxidado", "negro mate con brillo nacarado"]
+  },
+  volcanic: {
+    habitat: ["volcanes apagados", "barrancos de arcilla roja", "playas de vidrio molido"],
+    archetype: ["ser mineral vivo", "lagarto de cristal", "depredador nocturno"],
+    skin: ["piel granulada similar a piedra volcanica", "cristales pequeños incrustados", "placas negras con brillo aceitoso"],
+    movement: ["permanece inmovil y luego acelera de golpe", "excava y emerge bajo presion", "gira el torso antes de cambiar de direccion"],
+    senses: ["ve el calor residual", "huele minerales bajo tierra", "detecta metales enterrados"],
+    diet: ["minerales blandos", "arcilla humeda", "calor corporal residual"],
+    defense: ["vibra hasta quebrar objetos fragiles", "oscurece su piel para absorber calor", "endurece la piel por segundos"],
+    palette: ["gris ceniza y rojo arcilla", "negro mate con brillo nacarado", "gris pizarra y naranja oxidado"]
+  }
+};
+
 const seedProfiles = {
   pantano: {
     habitat: ["pantanos de agua negra", "costas de barro brillante", "rios termales"],
@@ -278,12 +489,14 @@ const state = loadState();
 let locked = state.locked || {};
 let saved = state.saved || [];
 let mode = state.mode || "wild";
+let selectedHabitat = state.selectedHabitat || "any";
 let favorite = state.favorite || false;
 let creature = state.creature || buildCreature({});
 
 const $ = (selector) => document.querySelector(selector);
 const elements = {
   modeGrid: $("#modeGrid"),
+  habitatSelect: $("#habitatSelect"),
   randomAllButton: $("#randomAllButton"),
   randomUnlockedButton: $("#randomUnlockedButton"),
   saveButton: $("#saveButton"),
@@ -308,6 +521,7 @@ init();
 function init() {
   elements.seedInput.value = state.seed || "";
   bindEvents();
+  renderHabitatSelect();
   render();
 }
 
@@ -315,6 +529,11 @@ function bindEvents() {
   elements.randomAllButton.addEventListener("click", () => randomize({ respectLocks: false, useSeed: false }));
   elements.randomUnlockedButton.addEventListener("click", () => randomize({ respectLocks: true, useSeed: false }));
   elements.expandSeedButton.addEventListener("click", () => randomize({ respectLocks: true, useSeed: true }));
+  elements.habitatSelect.addEventListener("change", () => {
+    selectedHabitat = elements.habitatSelect.value;
+    persist();
+    toast(`Habitat base: ${habitatChoices.find((item) => item.id === selectedHabitat).label}.`);
+  });
   elements.saveButton.addEventListener("click", saveCreature);
   elements.copyButton.addEventListener("click", () => copyText(buildSheet(creature), "Ficha copiada."));
   elements.downloadButton.addEventListener("click", downloadJson);
@@ -333,7 +552,7 @@ function bindEvents() {
 
 function randomize({ respectLocks, useSeed }) {
   const parts = { ...creature.parts };
-  const profile = useSeed ? analyzeSeed(elements.seedInput.value) : {};
+  const profile = getGenerationProfile(useSeed);
   modules.forEach((module) => {
     if (respectLocks && locked[module.id]) return;
     parts[module.id] = pick(module.id, profile);
@@ -348,7 +567,7 @@ function randomize({ respectLocks, useSeed }) {
 function randomizePart(id) {
   const parts = {
     ...creature.parts,
-    [id]: pick(id, analyzeSeed(elements.seedInput.value))
+    [id]: pick(id, getGenerationProfile(true))
   };
   favorite = false;
   creature = buildCreature(parts);
@@ -369,7 +588,7 @@ function buildCreature(parts) {
     favorite,
     createdAt: new Date().toISOString(),
     parts: filled,
-    pitch: `${name} es un ${filled.archetype} de ${filled.scale}, con ${filled.body}. Tiene ${filled.head}, ${filled.eyes} y ${filled.mouth}. Su cubierta es ${filled.skin}; se mueve asi: ${filled.movement}. Habita en ${filled.habitat}, donde suele ser ${filled.behavior}. Su defensa principal: ${filled.defense}. Rareza biologica: ${filled.oddity}.`
+    pitch: `${name} es una criatura de base ${filled.archetype}, de ${filled.scale}, con ${filled.body}. Tiene ${filled.head}, ${filled.eyes} y ${filled.mouth}. Su cubierta es ${filled.skin}; se mueve asi: ${filled.movement}. Habita en ${filled.habitat} y su conducta principal es: ${filled.behavior}. Su defensa principal: ${filled.defense}. Rareza biologica: ${filled.oddity}.`
   };
 }
 
@@ -383,9 +602,25 @@ function makeName(parts) {
 function pick(id, profile) {
   const exact = profile[id];
   if (exact?.length && Math.random() < 0.82) return randomItem(exact);
+  const habitat = selectedHabitat !== "any" ? habitatProfiles[selectedHabitat]?.[id] : null;
+  if (habitat?.length && Math.random() < 0.74) return randomItem(habitat);
   const bias = modeBias[mode]?.[id];
   if (bias?.length && Math.random() < 0.66) return randomItem(bias);
   return randomItem(modules.find((module) => module.id === id).values);
+}
+
+function getGenerationProfile(useSeed) {
+  const profile = {};
+  if (selectedHabitat !== "any") mergeProfile(profile, habitatProfiles[selectedHabitat]);
+  if (useSeed) mergeProfile(profile, analyzeSeed(elements.seedInput.value));
+  return profile;
+}
+
+function mergeProfile(target, source = {}) {
+  Object.entries(source).forEach(([id, options]) => {
+    target[id] = [...(target[id] || []), ...options];
+  });
+  return target;
 }
 
 function analyzeSeed(seed) {
@@ -409,6 +644,7 @@ function analyzeSeed(seed) {
 
 function render() {
   renderModes();
+  renderHabitatSelect();
   renderSeedChips();
   renderCreature();
   renderParts();
@@ -432,10 +668,27 @@ function renderModes() {
   });
 }
 
+function renderHabitatSelect() {
+  elements.habitatSelect.innerHTML = "";
+  habitatChoices.forEach((item) => {
+    const option = document.createElement("option");
+    option.value = item.id;
+    option.textContent = item.label;
+    elements.habitatSelect.append(option);
+  });
+  elements.habitatSelect.value = selectedHabitat;
+}
+
 function renderSeedChips() {
   const text = normalize(elements.seedInput.value);
   const matches = Object.keys(seedProfiles).filter((key) => text.includes(key));
   elements.seedChips.innerHTML = "";
+  if (selectedHabitat !== "any") {
+    const chip = document.createElement("span");
+    chip.className = "chip";
+    chip.textContent = habitatChoices.find((item) => item.id === selectedHabitat).label;
+    elements.seedChips.append(chip);
+  }
   matches.forEach((match) => {
     const chip = document.createElement("span");
     chip.className = "chip";
@@ -593,6 +846,7 @@ function persist() {
     locked,
     saved,
     mode,
+    selectedHabitat,
     favorite,
     seed: elements.seedInput?.value || ""
   }));
