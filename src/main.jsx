@@ -22,6 +22,9 @@ function App() {
   const [locked, setLocked] = useStored("locked", {});
   const [saved, setSaved] = useStored("saved", []);
   const [creature, setCreature] = useStored("creature", () => generateCreature({ regionId: "ibera", elementId: "any" }));
+  const [enhanced, setEnhanced] = useStored("enhanced", "");
+  const [enhancing, setEnhancing] = useState(false);
+  const [enhanceError, setEnhanceError] = useState("");
   const [toast, setToast] = useState("");
 
   const region = ecoregions[regionId];
@@ -46,6 +49,8 @@ function App() {
       locked
     });
     setCreature(next);
+    setEnhanced("");
+    setEnhanceError("");
     notify("Criatura generada.");
   }
 
@@ -58,6 +63,8 @@ function App() {
       forcePart: partKey
     });
     setCreature(next);
+    setEnhanced("");
+    setEnhanceError("");
   }
 
   async function copyText(text, message) {
@@ -77,12 +84,32 @@ function App() {
   }
 
   function saveCreature() {
-    setSaved([{ ...creature, id: crypto.randomUUID(), savedAt: new Date().toISOString() }, ...saved]);
+    setSaved([{ ...creature, enhanced, id: crypto.randomUUID(), savedAt: new Date().toISOString() }, ...saved]);
     notify("Criatura guardada.");
   }
 
+  async function enhanceCreature() {
+    setEnhancing(true);
+    setEnhanceError("");
+    try {
+      const response = await fetch("/api/enhance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ creature })
+      });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || "No se pudo mejorar la ficha.");
+      setEnhanced(payload.text);
+      notify("Ficha mejorada con IA.");
+    } catch (error) {
+      setEnhanceError(error.message || "Error al conectar con Groq.");
+    } finally {
+      setEnhancing(false);
+    }
+  }
+
   function downloadJson() {
-    const blob = new Blob([JSON.stringify(creature, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify({ ...creature, enhanced }, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
@@ -135,7 +162,7 @@ function App() {
               <button className="btn-primary" onClick={() => regenerate()}><Dices size={18} /> Randomizar</button>
               <button className="btn" onClick={() => regenerate({ onlyUnlocked: true })}><RefreshCcw size={18} /> Solo desbloqueados</button>
               <button className="btn" onClick={saveCreature}><Save size={18} /> Guardar</button>
-              <button className="btn" onClick={() => copyText(formatSheet(creature), "Ficha copiada.")}><Copy size={18} /> Copiar ficha</button>
+              <button className="btn" onClick={() => copyText(formatSheet(creature, enhanced), "Ficha copiada.")}><Copy size={18} /> Copiar ficha</button>
               <button className="btn" onClick={downloadJson}><Download size={18} /> JSON</button>
             </div>
           </section>
@@ -161,6 +188,24 @@ function App() {
               <Fact label="Defensa" value={creature.defense} />
               <Fact label="Debilidad" value={creature.weakness} />
             </div>
+
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+              <button className="btn-primary" onClick={enhanceCreature} disabled={enhancing}>
+                <Sparkles size={18} /> {enhancing ? "Mejorando..." : "Enhance IA"}
+              </button>
+              {enhanced ? (
+                <button className="btn" onClick={() => copyText(enhanced, "Ficha IA copiada.")}>
+                  <Copy size={18} /> Copiar IA
+                </button>
+              ) : null}
+            </div>
+            {enhanceError ? <p className="mt-3 rounded-lg border border-red-500/40 bg-red-950/40 p-3 text-sm text-red-200">{enhanceError}</p> : null}
+            {enhanced ? (
+              <article className="mt-5 rounded-lg border border-emerald-500/30 bg-emerald-950/20 p-4">
+                <p className="text-xs font-black uppercase tracking-normal text-emerald-300">Ficha mejorada por IA</p>
+                <pre className="mt-3 whitespace-pre-wrap font-sans text-sm leading-7 text-stone-200">{enhanced}</pre>
+              </article>
+            ) : null}
           </section>
 
           <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -190,7 +235,10 @@ function App() {
             </div>
             <div className="mt-3 grid gap-2 md:grid-cols-2">
               {saved.length === 0 ? <p className="text-sm text-stone-500">Todavia no hay criaturas guardadas.</p> : saved.slice(0, 8).map((item) => (
-                <button key={item.id} className="rounded-lg border border-stone-700 bg-stone-950 p-3 text-left hover:border-amber-400" onClick={() => setCreature(item)}>
+                <button key={item.id} className="rounded-lg border border-stone-700 bg-stone-950 p-3 text-left hover:border-amber-400" onClick={() => {
+                  setCreature(item);
+                  setEnhanced(item.enhanced || "");
+                }}>
                   <strong className="block text-stone-100">{item.name}</strong>
                   <span className="mt-1 block text-sm text-stone-500">{ecoregions[item.regionId].label} / {elements[item.elementId].label}</span>
                 </button>
@@ -271,8 +319,9 @@ function makeName(parts, elementId) {
   return `${random(syllables)}${random(endings)} ${elementTags[elementId]}`;
 }
 
-function formatSheet(creature) {
+function formatSheet(creature, enhanced = "") {
   const partLines = partKeys.map((key) => `- ${bodyPartLabels[key]}: ${creature.parts[key].text}`).join("\n");
+  const enhancedSection = enhanced ? `\n## Ficha IA\n${enhanced}\n` : "";
   return `# ${creature.name}
 
 ${creature.description}
@@ -284,6 +333,7 @@ ${partLines}
 - Ataque: ${creature.attack}
 - Defensa: ${creature.defense}
 - Debilidad: ${creature.weakness}
+${enhancedSection}
 `;
 }
 
