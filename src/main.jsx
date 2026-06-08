@@ -245,7 +245,7 @@ function App() {
             <p className="text-xs font-black uppercase tracking-normal text-amber-300">Bestiario</p>
             <h1 className="mt-1 text-2xl font-black leading-tight text-stone-50">Fantastico Argentino</h1>
             <p className="mt-2 text-sm leading-6 text-stone-400">
-              Criaturas inventadas a partir de fauna local, ecorregiones y elementos compatibles.
+              Entidades inventadas a partir de habitats argentinos, elementos y rarezas de bestiario.
             </p>
             <div className="mt-4 rounded-lg border border-stone-700 bg-stone-950/70 p-3">
               {user ? (
@@ -422,7 +422,7 @@ function generateCreature({ regionId, elementId, previous = null, locked = {}, f
     };
   });
 
-  const name = makeName(parts, resolvedElementId);
+  const name = makeName();
   const habitat = random(region.habitats);
   const attack = random(element.attacks);
   const defense = random(element.defenses);
@@ -456,11 +456,12 @@ function generateCreature({ regionId, elementId, previous = null, locked = {}, f
   };
 }
 
-function makeName(parts, elementId) {
-  const syllables = ["Aru", "Kai", "Tala", "Nac", "Piru", "Cura", "Yasi", "Puel", "Iber", "Kalen", "Ner", "Trem"];
-  const endings = ["mbo", "len", "curu", "ray", "tari", "ken", "vilo", "mara", "puk", "yen"];
-  const elementTags = { fire: "zonda", water: "ibera", plant: "ceibo", rock: "laja", ice: "austral", wind: "pampero", storm: "trueno", mud: "barro", salt: "sal", shadow: "umbra", metal: "fierro", spore: "micelio" };
-  return `${random(syllables)}${random(endings)} ${elementTags[elementId]}`;
+function makeName() {
+  const prefixes = ["Aru", "Kai", "Tala", "Nac", "Piru", "Cura", "Yasi", "Puel", "Kalen", "Ner", "Trem", "Oru", "Mav", "Sile", "Vek", "Iru"];
+  const middles = ["m", "l", "r", "sh", "k", "v", "n", "z", "t", "y"];
+  const endings = ["bo", "len", "cur", "rai", "tar", "ken", "vil", "mar", "puk", "yen", "sai", "vor", "nel", "ruk"];
+  const titles = ["Velado", "Torcido", "Hueco", "Mudo", "Doble", "Errante", "Hundido", "Liminal", "Oblicuo", "Sinfrente", "De Muchos", "Vuelto"];
+  return `${random(prefixes)}${random(middles)}${random(endings)} ${random(titles)}`;
 }
 
 function formatSheet(creature, enhanced = "") {

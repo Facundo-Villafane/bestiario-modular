@@ -172,7 +172,12 @@ export const partTemplates = {
     "masa compacta de lomo curvo, con bolsas luminosas bajo la piel",
     "cuerpo dividido en tres segmentos que se acomodan como piedras vivas",
     "pecho profundo con una cavidad central donde late su elemento",
-    "tronco asimetrico, como si hubiera sido modelado por viento, agua y maldicion"
+    "tronco asimetrico, como si hubiera sido modelado por viento, agua y maldicion",
+    "cuerpo en espiral, con organos visibles girando lentamente bajo una piel translucida",
+    "torso doble unido por una cintura estrecha que puede girar en sentidos opuestos",
+    "vientre suspendido en una membrana tensa, como si llevara una pequena tormenta dentro",
+    "caja corporal sin frente claro, capaz de orientarse hacia varias direcciones a la vez",
+    "cuerpo bajo con una segunda columna externa que se arquea sobre el lomo como una raiz"
   ],
   head: [
     "cabeza triangular sin hocico claro, con una corona de ojos pequenos",
@@ -181,7 +186,13 @@ export const partTemplates = {
     "frente transparente donde se ven destellos de su energia interna",
     "cabeza baja con cuernos blandos que cambian de posicion",
     "rostro sin boca visible hasta que ataca",
-    "cara larga, casi humana de lejos, pero imposible de sostener con la mirada"
+    "cara larga, casi humana de lejos, pero imposible de sostener con la mirada",
+    "tres rostros incompletos que comparten una sola boca vertical",
+    "craneo sin ojos frontales, con doce ojos pequenos alrededor del cuello",
+    "doble mandibula: una habla con chasquidos y la otra muerde en silencio",
+    "cinco narices flexibles que prueban aire, agua, tierra, miedo y memoria",
+    "cabeza partida por una grieta luminosa que se abre como parpado central",
+    "rostro liso con bocas falsas que solo sirven para respirar"
   ],
   legs: [
     "cuatro patas finas que pisan sin doblar la hierba",
@@ -190,7 +201,12 @@ export const partTemplates = {
     "apoyos anchos como raices, capaces de cerrarse alrededor del suelo",
     "piernas demasiado largas, con rodillas altas y andar ceremonial",
     "garras blandas que dejan marcas circulares en vez de huellas",
-    "extremidades que se repliegan bajo el cuerpo cuando quiere deslizarse"
+    "extremidades que se repliegan bajo el cuerpo cuando quiere deslizarse",
+    "nueve patas desiguales que se turnan para tocar el suelo",
+    "patas delanteras sin hueso, utiles para abrazar piedras, ramas o presas",
+    "zancos organicos que se acortan cuando entra en agua o barro",
+    "dedos laterales que caminan solos unos segundos antes del cuerpo",
+    "articulaciones dobles que le permiten avanzar de costado sin girar la cabeza"
   ],
   tail: [
     "cola bifurcada que se mueve aun cuando el cuerpo esta quieto",
@@ -199,7 +215,12 @@ export const partTemplates = {
     "cola corta cubierta de campanillas organicas mudas",
     "latigo posterior que dibuja simbolos en el aire",
     "cola pesada como un ancla ritual",
-    "apendice transparente donde se acumula el color del habitat"
+    "apendice transparente donde se acumula el color del habitat",
+    "tres colas finas, cada una con un pulso distinto",
+    "cola hueca que respira por la punta y detecta peligro desde atras",
+    "apendice enrollado con dientes pequenos en el borde interno",
+    "cola plana como una vela, usada para regular temperatura y humor",
+    "rastro posterior que se desprende y vuelve al cuerpo despues de unos pasos"
   ],
   hide: [
     "piel de textura cambiante, entre corteza, cuero viejo y vidrio opaco",
@@ -208,7 +229,12 @@ export const partTemplates = {
     "pelaje corto mezclado con polvo, sal, polen o ceniza",
     "membrana humeda que refleja un paisaje distinto al real",
     "coraza viva que crece en patrones distintos cada vez",
-    "capa exterior con pequenas grietas por donde sale vapor elemental"
+    "capa exterior con pequenas grietas por donde sale vapor elemental",
+    "piel con parpados diminutos repartidos por todo el lomo",
+    "cubierta de pequenas bolsas que se inflan segun el peligro cercano",
+    "manto de escamas blandas que cambian de orden durante la noche",
+    "piel con poros grandes que exhalan sonidos en lugar de vapor",
+    "coraza incompleta, dejando ver luces internas que no coinciden con sus movimientos"
   ],
   crest: [
     "aureola organica de espinas, semillas y fragmentos minerales",
@@ -217,7 +243,12 @@ export const partTemplates = {
     "marca luminosa que cambia segun su humor",
     "hilera de pequenas torres oseas sobre el lomo",
     "velo de fibras colgantes que cubre parte del rostro",
-    "ornamento lateral que parece una pieza de altar abandonado"
+    "ornamento lateral que parece una pieza de altar abandonado",
+    "racimo de ojos dormidos que despiertan de a uno",
+    "tres narices secundarias creciendo sobre la frente",
+    "cresta con pequenos organos que giran como veletas vivas",
+    "aro flotante de piel endurecida que no toca el cuerpo",
+    "protuberancias blandas que imitan piedras, frutos o huesos segun el habitat"
   ],
   sense: [
     "percibe nombres propios como vibraciones en el suelo",
@@ -226,7 +257,12 @@ export const partTemplates = {
     "escucha promesas rotas a gran distancia",
     "huele metal, lluvia o ceniza antes de que aparezcan",
     "lee movimientos del habitat por la piel",
-    "siente cuando alguien cruza un limite invisible"
+    "siente cuando alguien cruza un limite invisible",
+    "usa sus ojos secundarios para mirar atras, abajo y dentro del agua",
+    "sus narices laterales separan olores reales de olores magicos",
+    "detecta heridas antiguas en el paisaje como si fueran calor",
+    "escucha con la cavidad del pecho y responde con temblores",
+    "percibe intenciones por la forma en que se mueve la sombra ajena"
   ],
   movement: [
     "avanza por tirones suaves, como si el suelo lo llamara",
@@ -235,7 +271,12 @@ export const partTemplates = {
     "desaparece detras de elementos del paisaje demasiado pequenos para ocultarlo",
     "salta en silencio y cae con un sonido que llega tarde",
     "se balancea como una rama pesada bajo viento inexistente",
-    "camina dejando una estela breve de su elemento"
+    "camina dejando una estela breve de su elemento",
+    "camina hacia adelante mientras sus ojos miran en direcciones contradictorias",
+    "se parte visualmente en dos durante un salto y vuelve a unirse al caer",
+    "retrocede mejor de lo que avanza, como si recordara el camino antes de hacerlo",
+    "desplaza primero sus organos sensoriales y despues arrastra el cuerpo hacia ellos",
+    "trepa superficies lisas usando ventosas que aparecen solo cuando las necesita"
   ]
 };
 
@@ -249,6 +290,13 @@ export const temperaments = [
 
 export const magicalTraits = [
   "tiene un segundo par de ojos que solo se abre con luna nueva",
+  "posee siete ojos funcionales y cada uno ve una version distinta del peligro",
+  "tiene varias narices pequenas alrededor del cuello para oler clima, mentira y sangre",
+  "sus bocas falsas respiran mientras la boca verdadera permanece escondida",
+  "puede cerrar partes del cuerpo como parpados para proteger organos sensibles",
+  "un ojo interior se abre dentro del pecho cuando detecta magia cercana",
+  "sus organos sensoriales se reordenan despues de cada pelea",
+  "sus crias nacen con demasiadas extremidades y pierden algunas al elegir habitat",
   "sus crias nacen dentro de frutos duros como mates",
   "su sombra se adelanta unos pasos cuando presiente amenaza",
   "duerme de pie y suena con voces humanas prestadas",
@@ -277,6 +325,13 @@ export const mythicBehaviors = [
 
 export const visualOddities = [
   "cornamenta asimetrica con brotes minerales",
+  "siete ojos de tamanos distintos repartidos entre rostro, cuello y flancos",
+  "cinco narices flexibles, cada una orientada hacia un punto cardinal distinto",
+  "dos bocas falsas sobre el pecho y una boca real escondida bajo la mandibula",
+  "parpados en los hombros que se abren cuando se siente observado",
+  "un ojo grande bajo una membrana del vientre, usado para orientarse en oscuridad",
+  "extremidades secundarias pequenas que ordenan la cubierta mientras camina",
+  "dientes externos que funcionan como antenas tactiles",
   "mascara facial parecida a pintura ceremonial natural",
   "lomo con pequenas protuberancias como altares",
   "cola bifurcada que se mueve con intencion propia",
