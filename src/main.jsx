@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Copy, Dices, Download, Lock, RefreshCcw, Save, Sparkles, Unlock } from "lucide-react";
 import {
@@ -25,6 +25,8 @@ function App() {
   const [enhanced, setEnhanced] = useStored("enhanced", "");
   const [enhancing, setEnhancing] = useState(false);
   const [enhanceError, setEnhanceError] = useState("");
+  const [cloudLoading, setCloudLoading] = useState(false);
+  const [cloudError, setCloudError] = useState("");
   const [toast, setToast] = useState("");
 
   const region = ecoregions[regionId];
@@ -34,6 +36,10 @@ function App() {
   const availableElementOptions = useMemo(() => {
     return ["any", ...allowedElements];
   }, [allowedElements]);
+
+  useEffect(() => {
+    refreshCloud();
+  }, []);
 
   function notify(message) {
     setToast(message);
@@ -83,9 +89,54 @@ function App() {
     notify(message);
   }
 
-  function saveCreature() {
-    setSaved([{ ...creature, enhanced, id: crypto.randomUUID(), savedAt: new Date().toISOString() }, ...saved]);
-    notify("Criatura guardada.");
+  async function saveCreature() {
+    setCloudLoading(true);
+    setCloudError("");
+    try {
+      const { saveCreatureToCloud } = await import("./firebase");
+      const savedCreature = await saveCreatureToCloud(creature, enhanced);
+      setSaved([savedCreature, ...saved.filter((item) => item.id !== savedCreature.id)]);
+      notify("Criatura guardada en Firebase.");
+    } catch (error) {
+      const localCreature = { ...creature, enhanced, id: crypto.randomUUID(), savedAt: new Date().toISOString(), localOnly: true };
+      setSaved([localCreature, ...saved]);
+      setCloudError(error.message || "No se pudo guardar en Firebase. Se guardo local.");
+      notify("Guardada localmente.");
+    } finally {
+      setCloudLoading(false);
+    }
+  }
+
+  async function refreshCloud() {
+    setCloudLoading(true);
+    setCloudError("");
+    try {
+      const { loadCloudCreatures } = await import("./firebase");
+      const cloudCreatures = await loadCloudCreatures();
+      setSaved(cloudCreatures);
+    } catch (error) {
+      setCloudError(error.message || "No se pudieron cargar criaturas de Firebase.");
+    } finally {
+      setCloudLoading(false);
+    }
+  }
+
+  async function removeSaved(item) {
+    if (!item.localOnly) {
+      setCloudLoading(true);
+      setCloudError("");
+      try {
+        const { deleteCloudCreature } = await import("./firebase");
+        await deleteCloudCreature(item.id);
+      } catch (error) {
+        setCloudError(error.message || "No se pudo borrar en Firebase.");
+        setCloudLoading(false);
+        return;
+      }
+      setCloudLoading(false);
+    }
+    setSaved(saved.filter((savedItem) => savedItem.id !== item.id));
+    notify("Criatura borrada.");
   }
 
   async function enhanceCreature() {
@@ -161,7 +212,8 @@ function App() {
             <div className="grid gap-2">
               <button className="btn-primary" onClick={() => regenerate()}><Dices size={18} /> Randomizar</button>
               <button className="btn" onClick={() => regenerate({ onlyUnlocked: true })}><RefreshCcw size={18} /> Solo desbloqueados</button>
-              <button className="btn" onClick={saveCreature}><Save size={18} /> Guardar</button>
+              <button className="btn" onClick={saveCreature} disabled={cloudLoading}><Save size={18} /> {cloudLoading ? "Sincronizando..." : "Guardar"}</button>
+              <button className="btn" onClick={refreshCloud} disabled={cloudLoading}><RefreshCcw size={18} /> Cargar Firebase</button>
               <button className="btn" onClick={() => copyText(formatSheet(creature, enhanced), "Ficha copiada.")}><Copy size={18} /> Copiar ficha</button>
               <button className="btn" onClick={downloadJson}><Download size={18} /> JSON</button>
             </div>
@@ -231,17 +283,22 @@ function App() {
           <section className="rounded-lg border border-stone-700/80 bg-stone-900/80 p-4">
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg font-black">Guardadas</h2>
-              <span className="text-sm text-stone-500">{saved.length}</span>
+              <span className="text-sm text-stone-500">{cloudLoading ? "sync" : saved.length}</span>
             </div>
+            {cloudError ? <p className="mt-3 rounded-lg border border-red-500/40 bg-red-950/40 p-3 text-sm text-red-200">{cloudError}</p> : null}
             <div className="mt-3 grid gap-2 md:grid-cols-2">
-              {saved.length === 0 ? <p className="text-sm text-stone-500">Todavia no hay criaturas guardadas.</p> : saved.slice(0, 8).map((item) => (
-                <button key={item.id} className="rounded-lg border border-stone-700 bg-stone-950 p-3 text-left hover:border-amber-400" onClick={() => {
-                  setCreature(item);
-                  setEnhanced(item.enhanced || "");
-                }}>
-                  <strong className="block text-stone-100">{item.name}</strong>
-                  <span className="mt-1 block text-sm text-stone-500">{ecoregions[item.regionId].label} / {elements[item.elementId].label}</span>
-                </button>
+              {saved.length === 0 ? <p className="text-sm text-stone-500">Todavia no hay criaturas guardadas.</p> : saved.slice(0, 12).map((item) => (
+                <article key={item.id} className="rounded-lg border border-stone-700 bg-stone-950 p-3">
+                  <button className="w-full text-left" onClick={() => {
+                    setCreature(item);
+                    setEnhanced(item.enhanced || "");
+                  }}>
+                    <strong className="block text-stone-100">{item.name}</strong>
+                    <span className="mt-1 block text-sm text-stone-500">{ecoregions[item.regionId]?.label || "Ecorregion"} / {elements[item.elementId]?.label || "Elemento"}</span>
+                    {item.localOnly ? <span className="mt-2 inline-block rounded-full border border-amber-400/40 px-2 py-1 text-xs text-amber-200">local</span> : null}
+                  </button>
+                  <button className="mt-3 text-xs font-bold text-red-300 hover:text-red-200" onClick={() => removeSaved(item)}>Borrar</button>
+                </article>
               ))}
             </div>
           </section>
