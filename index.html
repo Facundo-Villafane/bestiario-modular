@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bestiario Modular</title>
+    <title>Bestiario Fantastico Argentino</title>
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
@@ -12,8 +12,8 @@
         <header class="brand">
           <div class="brand-mark">BM</div>
           <div>
-            <h1>Bestiario Modular</h1>
-            <p>Creador de criaturas por partes, rasgos y comportamiento.</p>
+            <h1>Bestiario Fantastico Argentino</h1>
+            <p>Criaturas argentinas hibridadas con elementos fantasticos.</p>
           </div>
         </header>
 
@@ -25,7 +25,13 @@
         <section class="panel">
           <h2>Habitat base</h2>
           <select id="habitatSelect"></select>
-          <p class="panel-note">Afecta anatomia, piel, sentidos, dieta, defensa y paleta.</p>
+          <p class="panel-note">Afecta especie base, anatomia, sentidos, dieta, defensa y paleta.</p>
+        </section>
+
+        <section class="panel">
+          <h2>Elemento base</h2>
+          <select id="elementSelect"></select>
+          <p class="panel-note">Sesga ataque, defensa, rareza y material fantastico.</p>
         </section>
 
         <section class="panel">
@@ -50,8 +56,8 @@
       <main class="workspace">
         <section class="hero">
           <div>
-            <p class="eyebrow">Generador de criaturas</p>
-            <h2>Crea una criatura unica combinando anatomia, materiales, sentidos y conducta.</h2>
+            <p class="eyebrow">Generador de criaturas argentinas</p>
+            <h2>Cruza fauna local, ecorregiones y elementos para crear un bestiario fantastico propio.</h2>
           </div>
         </section>
 
@@ -63,8 +69,8 @@
                 <h2 id="creatureName">Criatura sin generar</h2>
               </div>
               <div class="title-actions">
-                <button class="icon-button" id="copyDescriptionButton" title="Copiar descripcion">⧉</button>
-                <button class="icon-button" id="favoriteButton" title="Favorito">☆</button>
+                <button class="icon-button" id="copyDescriptionButton" title="Copiar descripcion">C</button>
+                <button class="icon-button" id="favoriteButton" title="Favorito">*</button>
               </div>
             </div>
             <p id="creaturePitch" class="pitch">Pulsa randomizar para generar una criatura modular.</p>
