@@ -5,8 +5,11 @@ import {
   bodyPartLabels,
   ecoregions,
   elements,
+  magicalTraits,
+  mythicBehaviors,
   partTemplates,
   temperaments,
+  visualOddities,
   weaknesses
 } from "./data";
 import "./styles.css";
@@ -315,6 +318,10 @@ function App() {
               <Fact label="Ataque" value={creature.attack} />
               <Fact label="Defensa" value={creature.defense} />
               <Fact label="Debilidad" value={creature.weakness} />
+              <Fact label="Rareza" value={creature.magicalTrait} />
+              <Fact label="Origen" value={creature.elementOrigin} />
+              <Fact label="Conducta" value={creature.mythicBehavior} />
+              <Fact label="Silueta" value={creature.visualOddity} />
             </div>
 
             <div className="mt-5 flex flex-col gap-2 sm:flex-row">
@@ -423,11 +430,15 @@ function generateCreature({ regionId, elementId, previous = null, locked = {}, f
   const attack = random(element.attacks);
   const defense = random(element.defenses);
   const mark = random(element.marks);
+  const elementOrigin = random(element.origins);
+  const magicalTrait = random(magicalTraits);
+  const mythicBehavior = random(mythicBehaviors);
+  const visualOddity = random(visualOddities);
   const temperament = random(temperaments);
   const palette = random(region.palette);
   const weakness = random(weaknesses[resolvedElementId]);
 
-  const description = `${name} es una criatura inventada de ${region.label}, no una especie real: combina ${parts.body.text}, ${parts.head.text}, ${parts.legs.text} y ${parts.tail.text}. Su ${parts.hide.text} expresa una adaptacion de tipo ${element.label.toLowerCase()}: ${mark}. Vive en ${habitat}, se comporta de forma ${temperament}, ataca con ${attack} y se protege mediante ${defense}. Su punto debil natural es ${weakness}. Paleta sugerida: ${palette}.`;
+  const description = `${name} es una criatura fantastica de ${region.label}: no existe como especie real, sino como hibrido de monte, mito y adaptacion extrema. Combina ${parts.body.text}, ${parts.head.text}, ${parts.legs.text} y ${parts.tail.text}; ademas presenta ${visualOddity}. Su ${parts.hide.text} manifiesta energia de tipo ${element.label.toLowerCase()}: ${mark}. Esa energia se explica porque ${elementOrigin}. Vive en ${habitat}, se comporta de forma ${temperament} y suele ${mythicBehavior}. Como rasgo sobrenatural, ${magicalTrait}. Ataca con ${attack}, se protege mediante ${defense} y su punto debil es ${weakness}. Paleta sugerida: ${palette}.`;
 
   return {
     id: crypto.randomUUID(),
@@ -439,13 +450,17 @@ function generateCreature({ regionId, elementId, previous = null, locked = {}, f
     defense,
     weakness,
     palette,
+    elementOrigin,
+    magicalTrait,
+    mythicBehavior,
+    visualOddity,
     parts,
     description
   };
 }
 
 function makeName(parts, elementId) {
-  const syllables = ["Aru", "Kai", "Tala", "Ñac", "Piru", "Curá", "Yasi", "Puel", "Iber", "Kalen", "Ner", "Trem"];
+  const syllables = ["Aru", "Kai", "Tala", "Nac", "Piru", "Cura", "Yasi", "Puel", "Iber", "Kalen", "Ner", "Trem"];
   const endings = ["mbo", "len", "curu", "ray", "tari", "ken", "vilo", "mara", "puk", "yen"];
   const elementTags = { fire: "zonda", water: "ibera", plant: "ceibo", rock: "laja", ice: "austral", wind: "pampero", storm: "trueno", mud: "barro", salt: "sal", shadow: "umbra", metal: "fierro", spore: "micelio" };
   return `${random(syllables)}${random(endings)} ${elementTags[elementId]}`;
@@ -465,6 +480,12 @@ ${partLines}
 - Ataque: ${creature.attack}
 - Defensa: ${creature.defense}
 - Debilidad: ${creature.weakness}
+
+## Rasgos fantasticos
+- Rareza: ${creature.magicalTrait || ""}
+- Origen elemental: ${creature.elementOrigin || ""}
+- Conducta: ${creature.mythicBehavior || ""}
+- Silueta: ${creature.visualOddity || ""}
 ${enhancedSection}
 `;
 }
