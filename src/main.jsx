@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Copy, Dices, Download, Lock, RefreshCcw, Save, Sparkles, Unlock } from "lucide-react";
+import { Copy, Dices, Download, Lock, LogIn, LogOut, RefreshCcw, Save, Sparkles, Unlock, UserCircle } from "lucide-react";
 import {
   bodyPartLabels,
   ecoregions,
@@ -13,7 +13,6 @@ import "./styles.css";
 
 const STORAGE_KEY = "bestiario-argentino:vite:v1";
 const regionIds = Object.keys(ecoregions);
-const elementIds = Object.keys(elements);
 const partKeys = Object.keys(bodyPartLabels);
 
 function App() {
@@ -27,6 +26,9 @@ function App() {
   const [enhanceError, setEnhanceError] = useState("");
   const [cloudLoading, setCloudLoading] = useState(false);
   const [cloudError, setCloudError] = useState("");
+  const [user, setUser] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
+  const [authLoading, setAuthLoading] = useState(false);
   const [toast, setToast] = useState("");
 
   const region = ecoregions[regionId];
@@ -38,7 +40,24 @@ function App() {
   }, [allowedElements]);
 
   useEffect(() => {
-    refreshCloud();
+    let unsubscribe = () => {};
+    import("./firebase")
+      .then(({ subscribeToAuth }) => {
+        unsubscribe = subscribeToAuth((nextUser) => {
+          setUser(nextUser);
+          setAuthReady(true);
+          if (nextUser) {
+            refreshCloud(nextUser);
+          } else {
+            setSaved([]);
+          }
+        });
+      })
+      .catch((error) => {
+        setAuthReady(true);
+        setCloudError(error.message || "No se pudo iniciar Firebase.");
+      });
+    return () => unsubscribe();
   }, []);
 
   function notify(message) {
@@ -90,6 +109,10 @@ function App() {
   }
 
   async function saveCreature() {
+    if (!user) {
+      notify("Inicia sesion con Google para guardar.");
+      return;
+    }
     setCloudLoading(true);
     setCloudError("");
     try {
@@ -98,16 +121,17 @@ function App() {
       setSaved([savedCreature, ...saved.filter((item) => item.id !== savedCreature.id)]);
       notify("Criatura guardada en Firebase.");
     } catch (error) {
-      const localCreature = { ...creature, enhanced, id: crypto.randomUUID(), savedAt: new Date().toISOString(), localOnly: true };
-      setSaved([localCreature, ...saved]);
-      setCloudError(error.message || "No se pudo guardar en Firebase. Se guardo local.");
-      notify("Guardada localmente.");
+      setCloudError(error.message || "No se pudo guardar en Firebase.");
     } finally {
       setCloudLoading(false);
     }
   }
 
-  async function refreshCloud() {
+  async function refreshCloud(activeUser = user) {
+    if (!activeUser) {
+      setSaved([]);
+      return;
+    }
     setCloudLoading(true);
     setCloudError("");
     try {
@@ -122,21 +146,51 @@ function App() {
   }
 
   async function removeSaved(item) {
-    if (!item.localOnly) {
-      setCloudLoading(true);
-      setCloudError("");
-      try {
-        const { deleteCloudCreature } = await import("./firebase");
-        await deleteCloudCreature(item.id);
-      } catch (error) {
-        setCloudError(error.message || "No se pudo borrar en Firebase.");
-        setCloudLoading(false);
-        return;
-      }
-      setCloudLoading(false);
+    if (!user) {
+      notify("Inicia sesion con Google para borrar.");
+      return;
     }
+    setCloudLoading(true);
+    setCloudError("");
+    try {
+      const { deleteCloudCreature } = await import("./firebase");
+      await deleteCloudCreature(item.id);
+    } catch (error) {
+      setCloudError(error.message || "No se pudo borrar en Firebase.");
+      setCloudLoading(false);
+      return;
+    }
+    setCloudLoading(false);
     setSaved(saved.filter((savedItem) => savedItem.id !== item.id));
     notify("Criatura borrada.");
+  }
+
+  async function loginGoogle() {
+    setAuthLoading(true);
+    setCloudError("");
+    try {
+      const { signInWithGoogle } = await import("./firebase");
+      await signInWithGoogle();
+      notify("Sesion iniciada.");
+    } catch (error) {
+      setCloudError(error.message || "No se pudo iniciar sesion con Google.");
+    } finally {
+      setAuthLoading(false);
+    }
+  }
+
+  async function logoutGoogle() {
+    setAuthLoading(true);
+    setCloudError("");
+    try {
+      const { signOutGoogle } = await import("./firebase");
+      await signOutGoogle();
+      notify("Sesion cerrada.");
+    } catch (error) {
+      setCloudError(error.message || "No se pudo cerrar sesion.");
+    } finally {
+      setAuthLoading(false);
+    }
   }
 
   async function enhanceCreature() {
@@ -190,6 +244,28 @@ function App() {
             <p className="mt-2 text-sm leading-6 text-stone-400">
               Criaturas inventadas a partir de fauna local, ecorregiones y elementos compatibles.
             </p>
+            <div className="mt-4 rounded-lg border border-stone-700 bg-stone-950/70 p-3">
+              {user ? (
+                <div className="flex items-center gap-3">
+                  {user.photoURL ? (
+                    <img className="h-9 w-9 rounded-full" src={user.photoURL} alt="" referrerPolicy="no-referrer" />
+                  ) : (
+                    <UserCircle className="h-9 w-9 text-stone-400" />
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <strong className="block truncate text-sm text-stone-100">{user.displayName || "Cuenta Google"}</strong>
+                    <span className="block truncate text-xs text-stone-500">{user.email}</span>
+                  </div>
+                  <button className="icon-btn" title="Cerrar sesion" onClick={logoutGoogle} disabled={authLoading}>
+                    <LogOut size={16} />
+                  </button>
+                </div>
+              ) : (
+                <button className="btn w-full" onClick={loginGoogle} disabled={!authReady || authLoading}>
+                  <LogIn size={18} /> {authLoading ? "Conectando..." : "Entrar con Google"}
+                </button>
+              )}
+            </div>
           </section>
 
           <section className="rounded-lg border border-stone-700/80 bg-stone-900/85 p-4">
@@ -212,8 +288,8 @@ function App() {
             <div className="grid gap-2">
               <button className="btn-primary" onClick={() => regenerate()}><Dices size={18} /> Randomizar</button>
               <button className="btn" onClick={() => regenerate({ onlyUnlocked: true })}><RefreshCcw size={18} /> Solo desbloqueados</button>
-              <button className="btn" onClick={saveCreature} disabled={cloudLoading}><Save size={18} /> {cloudLoading ? "Sincronizando..." : "Guardar"}</button>
-              <button className="btn" onClick={refreshCloud} disabled={cloudLoading}><RefreshCcw size={18} /> Cargar Firebase</button>
+              <button className="btn" onClick={saveCreature} disabled={!user || cloudLoading}><Save size={18} /> {cloudLoading ? "Sincronizando..." : "Guardar"}</button>
+              <button className="btn" onClick={refreshCloud} disabled={!user || cloudLoading}><RefreshCcw size={18} /> Cargar Firebase</button>
               <button className="btn" onClick={() => copyText(formatSheet(creature, enhanced), "Ficha copiada.")}><Copy size={18} /> Copiar ficha</button>
               <button className="btn" onClick={downloadJson}><Download size={18} /> JSON</button>
             </div>
@@ -287,7 +363,7 @@ function App() {
             </div>
             {cloudError ? <p className="mt-3 rounded-lg border border-red-500/40 bg-red-950/40 p-3 text-sm text-red-200">{cloudError}</p> : null}
             <div className="mt-3 grid gap-2 md:grid-cols-2">
-              {saved.length === 0 ? <p className="text-sm text-stone-500">Todavia no hay criaturas guardadas.</p> : saved.slice(0, 12).map((item) => (
+              {!user ? <p className="text-sm text-stone-500">Inicia sesion con Google para ver tus criaturas guardadas.</p> : saved.length === 0 ? <p className="text-sm text-stone-500">Todavia no hay criaturas guardadas.</p> : saved.slice(0, 12).map((item) => (
                 <article key={item.id} className="rounded-lg border border-stone-700 bg-stone-950 p-3">
                   <button className="w-full text-left" onClick={() => {
                     setCreature(item);
@@ -295,7 +371,6 @@ function App() {
                   }}>
                     <strong className="block text-stone-100">{item.name}</strong>
                     <span className="mt-1 block text-sm text-stone-500">{ecoregions[item.regionId]?.label || "Ecorregion"} / {elements[item.elementId]?.label || "Elemento"}</span>
-                    {item.localOnly ? <span className="mt-2 inline-block rounded-full border border-amber-400/40 px-2 py-1 text-xs text-amber-200">local</span> : null}
                   </button>
                   <button className="mt-3 text-xs font-bold text-red-300 hover:text-red-200" onClick={() => removeSaved(item)}>Borrar</button>
                 </article>

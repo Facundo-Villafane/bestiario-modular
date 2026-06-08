@@ -1,5 +1,13 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInAnonymously } from "firebase/auth";
+import {
+  getAuth,
+  getRedirectResult,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signInWithRedirect,
+  signOut
+} from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -27,33 +35,47 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const creaturesRef = collection(db, "creatures");
+const googleProvider = new GoogleAuthProvider();
 
-export function getClientId() {
-  const key = "bestiario-argentino:client-id";
-  let clientId = localStorage.getItem(key);
-  if (!clientId) {
-    clientId = crypto.randomUUID();
-    localStorage.setItem(key, clientId);
-  }
-  return clientId;
+getRedirectResult(auth).catch(() => {
+  // If there is no pending redirect result, Firebase rejects quietly in some browsers.
+});
+
+export function subscribeToAuth(callback) {
+  return onAuthStateChanged(auth, callback);
 }
 
-async function getOwner() {
+export async function signInWithGoogle() {
   try {
-    const session = auth.currentUser || (await signInAnonymously(auth)).user;
-    return { ownerField: "uid", ownerId: session.uid, authMode: "anonymous" };
-  } catch {
-    return { ownerField: "clientId", ownerId: getClientId(), authMode: "client" };
+    return await signInWithPopup(auth, googleProvider);
+  } catch (error) {
+    if (error.code === "auth/popup-blocked" || error.code === "auth/cancelled-popup-request") {
+      await signInWithRedirect(auth, googleProvider);
+      return null;
+    }
+    throw error;
   }
+}
+
+export function signOutGoogle() {
+  return signOut(auth);
+}
+
+function requireUser() {
+  if (!auth.currentUser) {
+    throw new Error("Inicia sesion con Google para sincronizar tus criaturas.");
+  }
+  return auth.currentUser;
 }
 
 export async function saveCreatureToCloud(creature, enhanced = "") {
-  const owner = await getOwner();
+  const user = requireUser();
   const payload = {
     ...creature,
     enhanced,
-    [owner.ownerField]: owner.ownerId,
-    authMode: owner.authMode,
+    uid: user.uid,
+    userEmail: user.email || "",
+    userName: user.displayName || "",
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()
   };
@@ -62,10 +84,10 @@ export async function saveCreatureToCloud(creature, enhanced = "") {
 }
 
 export async function loadCloudCreatures() {
-  const owner = await getOwner();
+  const user = requireUser();
   const q = query(
     creaturesRef,
-    where(owner.ownerField, "==", owner.ownerId),
+    where("uid", "==", user.uid),
     limit(50)
   );
   const snapshot = await getDocs(q);

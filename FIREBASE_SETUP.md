@@ -1,12 +1,13 @@
 # Firebase setup
 
-La app usa Cloud Firestore para guardar criaturas.
+La app usa Google Auth y Cloud Firestore para guardar criaturas por cuenta.
 
 ## Recomendado
 
-1. En Firebase Console, habilitar **Authentication > Sign-in method > Anonymous**.
-2. Crear/activar **Cloud Firestore**.
-3. Usar estas reglas:
+1. En Firebase Console, habilitar **Authentication > Sign-in method > Google**.
+2. En **Authentication > Settings > Authorized domains**, agregar `bestiario-fantastico.vercel.app`.
+3. Crear/activar **Cloud Firestore**.
+4. Usar estas reglas:
 
 ```js
 rules_version = '2';
@@ -24,8 +25,8 @@ service cloud.firestore {
 }
 ```
 
-Con esto, cada navegador/dispositivo crea un usuario anonimo y solo puede leer/borrar sus propias criaturas.
+Con esto, cada cuenta de Google solo puede leer, crear y borrar sus propias criaturas.
 
 ## Nota
 
-La `apiKey` de Firebase en frontend no es secreta. La seguridad real esta en las reglas de Firestore.
+La `apiKey` de Firebase en frontend no es secreta. La seguridad real esta en Google Auth y en las reglas de Firestore.
