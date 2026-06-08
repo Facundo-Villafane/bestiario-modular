@@ -40,10 +40,13 @@
 
   .surface {
     @apply min-w-0 overflow-hidden rounded-lg border border-stone-700/80;
+    contain: paint;
+    isolation: isolate;
   }
 
   .copy-text {
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
     word-break: normal;
+    hyphens: auto;
   }
 }

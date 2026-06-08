@@ -239,8 +239,8 @@ function App() {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-stone-950 text-stone-100">
-      <div className="mx-auto grid max-w-7xl gap-4 px-3 py-3 sm:px-5 lg:grid-cols-[320px_minmax(0,1fr)] lg:py-5">
-        <aside className="space-y-3 lg:sticky lg:top-5 lg:self-start">
+      <div className="mx-auto grid max-w-7xl gap-4 px-3 py-3 sm:px-5 2xl:grid-cols-[320px_minmax(0,1fr)] lg:py-5">
+        <aside className="space-y-3 2xl:sticky 2xl:top-5 2xl:self-start">
           <section className="surface bg-stone-900/85 p-4 shadow-2xl">
             <p className="text-xs font-black uppercase tracking-normal text-amber-300">Bestiario</p>
             <h1 className="mt-1 text-2xl font-black leading-tight text-stone-50">Fantastico Argentino</h1>
@@ -300,7 +300,7 @@ function App() {
         </aside>
 
         <section className="min-w-0 space-y-4">
-          <section className="surface bg-gradient-to-br from-stone-900 to-stone-950 p-4 shadow-2xl sm:p-5">
+          <section className="surface bg-stone-900 p-4 shadow-2xl sm:p-5">
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div>
                 <p className="text-xs font-black uppercase tracking-normal text-amber-300">{region.label} / {elements[creature.elementId].label}</p>
@@ -313,7 +313,7 @@ function App() {
 
             <p className="copy-text mt-5 max-w-4xl text-lg leading-8 text-stone-200">{creature.description}</p>
 
-            <div className="mt-5 grid min-w-0 gap-2 sm:grid-cols-2 2xl:grid-cols-4">
+            <div className="mt-5 grid min-w-0 gap-2 lg:grid-cols-2 2xl:grid-cols-4">
               <Fact label="Habitat" value={creature.habitat} />
               <Fact label="Ataque" value={creature.attack} />
               <Fact label="Defensa" value={creature.defense} />
@@ -343,7 +343,7 @@ function App() {
             ) : null}
           </section>
 
-          <section className="grid min-w-0 gap-3 sm:grid-cols-2 2xl:grid-cols-4">
+          <section className="grid min-w-0 gap-3 lg:grid-cols-2 2xl:grid-cols-4">
             {partKeys.map((key) => (
               <article key={key} className="surface bg-stone-900/80 p-4">
                 <div className="flex items-start justify-between gap-3">
