@@ -238,13 +238,13 @@ function App() {
   }
 
   return (
-    <main className="min-h-screen bg-stone-950 text-stone-100">
+    <main className="min-h-screen overflow-x-hidden bg-stone-950 text-stone-100">
       <div className="mx-auto grid max-w-7xl gap-4 px-3 py-3 sm:px-5 lg:grid-cols-[320px_minmax(0,1fr)] lg:py-5">
         <aside className="space-y-3 lg:sticky lg:top-5 lg:self-start">
-          <section className="rounded-lg border border-stone-700/80 bg-stone-900/85 p-4 shadow-2xl">
+          <section className="surface bg-stone-900/85 p-4 shadow-2xl">
             <p className="text-xs font-black uppercase tracking-normal text-amber-300">Bestiario</p>
             <h1 className="mt-1 text-2xl font-black leading-tight text-stone-50">Fantastico Argentino</h1>
-            <p className="mt-2 text-sm leading-6 text-stone-400">
+            <p className="copy-text mt-2 text-sm leading-6 text-stone-400">
               Entidades inventadas a partir de habitats argentinos, elementos y rarezas de bestiario.
             </p>
             <div className="mt-4 rounded-lg border border-stone-700 bg-stone-950/70 p-3">
@@ -271,7 +271,7 @@ function App() {
             </div>
           </section>
 
-          <section className="rounded-lg border border-stone-700/80 bg-stone-900/85 p-4">
+          <section className="surface bg-stone-900/85 p-4">
             <label className="label" htmlFor="region">Ecorregion</label>
             <select id="region" className="select" value={regionId} onChange={(event) => handleRegion(event.target.value)}>
               {regionIds.map((id) => <option key={id} value={id}>{ecoregions[id].label}</option>)}
@@ -287,7 +287,7 @@ function App() {
             </div>
           </section>
 
-          <section className="rounded-lg border border-stone-700/80 bg-stone-900/85 p-4">
+          <section className="surface bg-stone-900/85 p-4">
             <div className="grid gap-2">
               <button className="btn-primary" onClick={() => regenerate()}><Dices size={18} /> Randomizar</button>
               <button className="btn" onClick={() => regenerate({ onlyUnlocked: true })}><RefreshCcw size={18} /> Solo desbloqueados</button>
@@ -299,21 +299,21 @@ function App() {
           </section>
         </aside>
 
-        <section className="space-y-4">
-          <section className="rounded-lg border border-stone-700/80 bg-gradient-to-br from-stone-900 to-stone-950 p-4 shadow-2xl sm:p-5">
+        <section className="min-w-0 space-y-4">
+          <section className="surface bg-gradient-to-br from-stone-900 to-stone-950 p-4 shadow-2xl sm:p-5">
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div>
                 <p className="text-xs font-black uppercase tracking-normal text-amber-300">{region.label} / {elements[creature.elementId].label}</p>
-                <h2 className="mt-2 text-3xl font-black leading-none text-stone-50 sm:text-5xl">{creature.name}</h2>
+                <h2 className="copy-text mt-2 text-3xl font-black leading-none text-stone-50 sm:text-5xl">{creature.name}</h2>
               </div>
               <button className="btn-primary w-full md:w-auto" onClick={() => copyText(creature.description, "Descripcion copiada.")}>
                 <Copy size={18} /> Copiar descripcion
               </button>
             </div>
 
-            <p className="mt-5 max-w-4xl text-lg leading-8 text-stone-200">{creature.description}</p>
+            <p className="copy-text mt-5 max-w-4xl text-lg leading-8 text-stone-200">{creature.description}</p>
 
-            <div className="mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-5 grid min-w-0 gap-2 sm:grid-cols-2 2xl:grid-cols-4">
               <Fact label="Habitat" value={creature.habitat} />
               <Fact label="Ataque" value={creature.attack} />
               <Fact label="Defensa" value={creature.defense} />
@@ -343,13 +343,13 @@ function App() {
             ) : null}
           </section>
 
-          <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <section className="grid min-w-0 gap-3 sm:grid-cols-2 2xl:grid-cols-4">
             {partKeys.map((key) => (
-              <article key={key} className="rounded-lg border border-stone-700/80 bg-stone-900/80 p-4">
+              <article key={key} className="surface bg-stone-900/80 p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-xs font-black uppercase tracking-normal text-stone-500">{bodyPartLabels[key]}</p>
-                    <h3 className="mt-1 text-base font-bold text-stone-100">{creature.parts[key].text}</h3>
+                    <h3 className="copy-text mt-1 text-base font-bold leading-6 text-stone-100">{creature.parts[key].text}</h3>
                   </div>
                   <div className="flex gap-1">
                     <button className="icon-btn" title="Randomizar parte" onClick={() => rerollPart(key)}><RefreshCcw size={16} /></button>
@@ -358,26 +358,26 @@ function App() {
                     </button>
                   </div>
                 </div>
-                <p className="mt-3 text-sm text-stone-400">Anatomia fantastica generada para esta criatura.</p>
+                <p className="copy-text mt-3 text-sm text-stone-400">Anatomia fantastica generada para esta criatura.</p>
               </article>
             ))}
           </section>
 
-          <section className="rounded-lg border border-stone-700/80 bg-stone-900/80 p-4">
+          <section className="surface bg-stone-900/80 p-4">
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg font-black">Guardadas</h2>
               <span className="text-sm text-stone-500">{cloudLoading ? "sync" : saved.length}</span>
             </div>
             {cloudError ? <p className="mt-3 rounded-lg border border-red-500/40 bg-red-950/40 p-3 text-sm text-red-200">{cloudError}</p> : null}
-            <div className="mt-3 grid gap-2 md:grid-cols-2">
-              {!user ? <p className="text-sm text-stone-500">Inicia sesion con Google para ver tus criaturas guardadas.</p> : saved.length === 0 ? <p className="text-sm text-stone-500">Todavia no hay criaturas guardadas.</p> : saved.slice(0, 12).map((item) => (
-                <article key={item.id} className="rounded-lg border border-stone-700 bg-stone-950 p-3">
+            <div className="mt-3 grid min-w-0 gap-2 md:grid-cols-2">
+              {!user ? <p className="copy-text text-sm text-stone-500">Inicia sesion con Google para ver tus criaturas guardadas.</p> : saved.length === 0 ? <p className="copy-text text-sm text-stone-500">Todavia no hay criaturas guardadas.</p> : saved.slice(0, 12).map((item) => (
+                <article key={item.id} className="min-w-0 overflow-hidden rounded-lg border border-stone-700 bg-stone-950 p-3">
                   <button className="w-full text-left" onClick={() => {
                     setCreature(item);
                     setEnhanced(item.enhanced || "");
                   }}>
-                    <strong className="block text-stone-100">{item.name}</strong>
-                    <span className="mt-1 block text-sm text-stone-500">{ecoregions[item.regionId]?.label || "Ecorregion"} / {elements[item.elementId]?.label || "Elemento"}</span>
+                    <strong className="copy-text block text-stone-100">{item.name}</strong>
+                    <span className="copy-text mt-1 block text-sm text-stone-500">{ecoregions[item.regionId]?.label || "Ecorregion"} / {elements[item.elementId]?.label || "Elemento"}</span>
                   </button>
                   <button className="mt-3 text-xs font-bold text-red-300 hover:text-red-200" onClick={() => removeSaved(item)}>Borrar</button>
                 </article>
@@ -395,9 +395,9 @@ function App() {
 
 function Fact({ label, value }) {
   return (
-    <div className="rounded-lg border border-stone-700 bg-stone-950/70 p-3">
+    <div className="min-w-0 overflow-hidden rounded-lg border border-stone-700 bg-stone-950/70 p-3">
       <strong className="block text-xs uppercase tracking-normal text-amber-300">{label}</strong>
-      <span className="mt-1 block text-sm leading-5 text-stone-300">{value}</span>
+      <span className="copy-text mt-1 block text-sm leading-5 text-stone-300">{value}</span>
     </div>
   );
 }
