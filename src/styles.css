@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    margin: 0;
+    background: #0c0a09;
+  }
+
+  button,
+  select {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .label {
+    @apply mb-2 block text-xs font-black uppercase tracking-normal text-stone-400;
+  }
+
+  .select {
+    @apply w-full rounded-lg border border-stone-700 bg-stone-950 px-3 py-3 text-sm text-stone-100 outline-none focus:border-amber-400;
+  }
+
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-stone-700 bg-stone-950 px-4 py-2 text-sm font-bold text-stone-100 hover:border-amber-400;
+  }
+
+  .btn-primary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-amber-300 bg-amber-400 px-4 py-2 text-sm font-black text-stone-950 hover:bg-amber-300;
+  }
+
+  .icon-btn {
+    @apply grid h-9 w-9 place-items-center rounded-lg border border-stone-700 bg-stone-950 text-stone-200 hover:border-amber-400;
+  }
+
+  .pill {
+    @apply rounded-full border border-amber-400/40 bg-amber-400/10 px-2.5 py-1 text-xs font-bold text-amber-200;
+  }
+}
