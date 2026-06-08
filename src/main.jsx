@@ -241,13 +241,13 @@ function App() {
     <main className="min-h-screen overflow-x-hidden bg-stone-950 text-stone-100">
       <div className="mx-auto grid max-w-7xl gap-4 px-3 py-3 sm:px-5 2xl:grid-cols-[320px_minmax(0,1fr)] lg:py-5">
         <aside className="space-y-3 2xl:sticky 2xl:top-5 2xl:self-start">
-          <section className="surface bg-stone-900/85 p-4 shadow-2xl">
+          <section className="surface p-4">
             <p className="text-xs font-black uppercase tracking-normal text-amber-300">Bestiario</p>
             <h1 className="mt-1 text-2xl font-black leading-tight text-stone-50">Fantastico Argentino</h1>
             <p className="copy-text mt-2 text-sm leading-6 text-stone-400">
               Entidades inventadas a partir de habitats argentinos, elementos y rarezas de bestiario.
             </p>
-            <div className="mt-4 rounded-lg border border-stone-700 bg-stone-950/70 p-3">
+            <div className="mt-4 rounded-lg border border-stone-700 bg-stone-950 p-3">
               {user ? (
                 <div className="flex items-center gap-3">
                   {user.photoURL ? (
@@ -271,7 +271,7 @@ function App() {
             </div>
           </section>
 
-          <section className="surface bg-stone-900/85 p-4">
+          <section className="surface p-4">
             <label className="label" htmlFor="region">Ecorregion</label>
             <select id="region" className="select" value={regionId} onChange={(event) => handleRegion(event.target.value)}>
               {regionIds.map((id) => <option key={id} value={id}>{ecoregions[id].label}</option>)}
@@ -287,7 +287,7 @@ function App() {
             </div>
           </section>
 
-          <section className="surface bg-stone-900/85 p-4">
+          <section className="surface p-4">
             <div className="grid gap-2">
               <button className="btn-primary" onClick={() => regenerate()}><Dices size={18} /> Randomizar</button>
               <button className="btn" onClick={() => regenerate({ onlyUnlocked: true })}><RefreshCcw size={18} /> Solo desbloqueados</button>
@@ -300,7 +300,7 @@ function App() {
         </aside>
 
         <section className="min-w-0 space-y-4">
-          <section className="surface bg-stone-900 p-4 shadow-2xl sm:p-5">
+          <section className="surface p-4 sm:p-5">
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
               <div>
                 <p className="text-xs font-black uppercase tracking-normal text-amber-300">{region.label} / {elements[creature.elementId].label}</p>
@@ -334,9 +334,9 @@ function App() {
                 </button>
               ) : null}
             </div>
-            {enhanceError ? <p className="mt-3 rounded-lg border border-red-500/40 bg-red-950/40 p-3 text-sm text-red-200">{enhanceError}</p> : null}
+            {enhanceError ? <p className="mt-3 rounded-lg border border-red-500 bg-red-950 p-3 text-sm text-red-200">{enhanceError}</p> : null}
             {enhanced ? (
-              <article className="mt-5 rounded-lg border border-emerald-500/30 bg-emerald-950/20 p-4">
+              <article className="mt-5 rounded-lg border border-emerald-700 bg-emerald-950 p-4">
                 <p className="text-xs font-black uppercase tracking-normal text-emerald-300">Ficha mejorada por IA</p>
                 <pre className="mt-3 whitespace-pre-wrap font-sans text-sm leading-7 text-stone-200">{enhanced}</pre>
               </article>
@@ -345,7 +345,7 @@ function App() {
 
           <section className="grid min-w-0 gap-3 lg:grid-cols-2 2xl:grid-cols-4">
             {partKeys.map((key) => (
-              <article key={key} className="surface bg-stone-900/80 p-4">
+              <article key={key} className="surface p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-xs font-black uppercase tracking-normal text-stone-500">{bodyPartLabels[key]}</p>
@@ -363,12 +363,12 @@ function App() {
             ))}
           </section>
 
-          <section className="surface bg-stone-900/80 p-4">
+          <section className="surface p-4">
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg font-black">Guardadas</h2>
               <span className="text-sm text-stone-500">{cloudLoading ? "sync" : saved.length}</span>
             </div>
-            {cloudError ? <p className="mt-3 rounded-lg border border-red-500/40 bg-red-950/40 p-3 text-sm text-red-200">{cloudError}</p> : null}
+            {cloudError ? <p className="mt-3 rounded-lg border border-red-500 bg-red-950 p-3 text-sm text-red-200">{cloudError}</p> : null}
             <div className="mt-3 grid min-w-0 gap-2 md:grid-cols-2">
               {!user ? <p className="copy-text text-sm text-stone-500">Inicia sesion con Google para ver tus criaturas guardadas.</p> : saved.length === 0 ? <p className="copy-text text-sm text-stone-500">Todavia no hay criaturas guardadas.</p> : saved.slice(0, 12).map((item) => (
                 <article key={item.id} className="min-w-0 overflow-hidden rounded-lg border border-stone-700 bg-stone-950 p-3">
@@ -386,16 +386,18 @@ function App() {
           </section>
         </section>
       </div>
-      <div className={`fixed bottom-4 left-1/2 max-w-[calc(100vw-24px)] -translate-x-1/2 rounded-lg border border-amber-400/50 bg-stone-900 px-4 py-3 text-sm shadow-2xl transition ${toast ? "opacity-100" : "pointer-events-none opacity-0"}`}>
-        {toast}
-      </div>
+      {toast ? (
+        <div className="fixed bottom-4 left-1/2 max-w-[calc(100vw-24px)] -translate-x-1/2 rounded-lg border border-amber-500 bg-stone-900 px-4 py-3 text-sm">
+          {toast}
+        </div>
+      ) : null}
     </main>
   );
 }
 
 function Fact({ label, value }) {
   return (
-    <div className="min-w-0 overflow-hidden rounded-lg border border-stone-700 bg-stone-950/70 p-3">
+    <div className="min-w-0 overflow-hidden rounded-lg border border-stone-700 bg-stone-950 p-3">
       <strong className="block text-xs uppercase tracking-normal text-amber-300">{label}</strong>
       <span className="copy-text mt-1 block text-sm leading-5 text-stone-300">{value}</span>
     </div>
