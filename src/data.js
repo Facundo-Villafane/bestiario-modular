@@ -65,7 +65,7 @@ export const elements = {
   shadow: {
     label: "Sombra",
     attacks: ["sombra que apaga sonido", "mordida sin reflejo", "velo oscuro que confunde", "zarpazo que enfria la memoria", "silbido que oscurece el borde de la vista"],
-    defenses: ["desaparece en sombra baja", "copia siluetas de otras especies", "piel que absorbe luz rasante", "doble sombra que distrae perseguidores"],
+    defenses: ["desaparece en sombra baja", "copia siluetas imposibles", "piel que absorbe luz rasante", "doble sombra que distrae perseguidores"],
     marks: ["lomo negro mate", "ojos sin brillo", "contorno borroso", "reflejo que llega tarde", "manchas que se mueven solas"],
     origins: ["su pelaje absorbe luz con pigmentos imposibles", "vive asociado a hongos oscuros que apagan reflejos", "sus escamas dispersan la luz y vuelven incierto el contorno"]
   },
@@ -83,84 +83,72 @@ export const ecoregions = {
     label: "Esteros del Ibera",
     elements: ["water", "mud", "plant", "spore", "shadow"],
     habitats: ["lagunas con camalotes", "banados de embalsados flotantes", "juncales correntinos", "islas de vegetacion que cambian de lugar", "orillas donde el agua parece respirar"],
-    species: ["carpincho", "yacare overo", "ciervo de los pantanos", "lobito de rio", "boa curiyu", "chaja", "aguara guazu", "tordo amarillo"],
     palette: ["verde camalote, barro negro y marfil", "ocre mojado y azul laguna", "verde oscuro con reflejos dorados", "gris tormenta, junco seco y ojo ambar"]
   },
   yungas: {
     label: "Yungas",
     elements: ["plant", "water", "spore", "shadow", "storm"],
     habitats: ["selva montana de neblina", "quebradas humedas", "laderas con helechos gigantes", "senderos tapados por vapor tibio", "copas donde nunca llega sol directo"],
-    species: ["tapir", "mono cai", "yaguarete", "corzuela", "rana marsupial", "tucan", "oso melero", "pava de monte"],
     palette: ["verde profundo y amarillo fruta", "barro rojo y sombra azul", "negro selva con manchas hojas", "turquesa humedad y naranja tucan"]
   },
   paranaense: {
     label: "Selva Paranaense",
     elements: ["plant", "water", "spore", "shadow", "rock"],
     habitats: ["selva misionera de tierra colorada", "tacuarales cerrados", "saltos con niebla roja", "paredones cubiertos de raices", "claros donde las piedras transpiran"],
-    species: ["yaguarete", "tapir", "oso hormiguero", "yarara", "tucan", "coati", "mono caraya", "harpia"],
     palette: ["tierra colorada, verde brillante y negro", "ocre rojo y amarillo pico", "verde oscuro con blanco hueso", "rojo laterita y azul sombra"]
   },
   chaco: {
     label: "Chaco",
     elements: ["plant", "rock", "fire", "shadow", "storm"],
     habitats: ["monte de quebrachos", "palmares secos", "isletas de algarrobo", "picadas con tierra partida", "nidos abandonados bajo calor inmovil"],
-    species: ["tatu carreta", "pecari quimilero", "oso hormiguero", "aguara guazu", "carancho", "boa lampalagua", "charata", "pichi ciego"],
     palette: ["madera seca, cobre y negro", "amarillo pasto y gris corteza", "rojo tierra y verde quimil", "humo bajo y miel oscura"]
   },
   pampa: {
     label: "Pampa",
     elements: ["wind", "storm", "plant", "mud", "rock"],
     habitats: ["pastizales abiertos", "lagunas bajas con juncales", "campos bajo pampero", "tapiales viejos mordidos por viento", "cuchillas donde el cielo pesa"],
-    species: ["nandu", "hornero", "vizcacha", "mulita pampeana", "lechucita vizcachera", "chaja", "zorro pampeano", "venado de las pampas"],
     palette: ["pasto seco, cielo gris y barro", "ocre claro y blanco tiza", "marron vizcacha y azul tormenta", "verde cardo y plata lluvia"]
   },
   espinal: {
     label: "Espinal",
     elements: ["plant", "wind", "fire", "rock", "shadow"],
     habitats: ["bosques de calden", "algarrobales abiertos", "espinales secos", "sombra rota entre ramas duras", "claros con semillas que crujen"],
-    species: ["zorro gris", "cardenal amarillo", "vizcacha", "puma", "tordo renegrido", "lagarto overo", "monterita", "comadreja overa"],
     palette: ["ambar, calden y gris humo", "amarillo cardenal y marron seco", "verde opaco y rojo arcilla", "negro tordo y oro viejo"]
   },
   monte: {
     label: "Monte",
     elements: ["salt", "rock", "fire", "wind", "shadow"],
     habitats: ["jarillales del monte", "canadones secos", "salitrales cuyanos", "arenales con piedras calientes", "ramblas donde el agua aparece una vez al ano"],
-    species: ["mara patagonica", "guanaco", "zorro colorado", "lagarto overo", "tortuga terrestre", "piche", "choique", "matuasto"],
     palette: ["salitre, jarilla y rojo piedra", "arena palida y sombra violeta", "ocre seco y negro zorro", "cobre, hueso y verde jarilla"]
   },
   puna: {
     label: "Puna y Altos Andes",
     elements: ["rock", "salt", "ice", "wind", "storm"],
     habitats: ["salares de altura", "vegas punenas", "laderas frias bajo cielo limpio", "apachetas que silban al anochecer", "lagunas altas con espuma mineral"],
-    species: ["vicuna", "flamenco austral", "condor andino", "gato andino", "guanaco", "suri cordillerano", "chinchillon", "lagartija punena"],
     palette: ["sal blanco, rosa flamenco y azul altura", "gris piedra y dorado vicuna", "violeta sombra y nieve", "turquesa laguna y negro condor"]
   },
   patagonia: {
     label: "Estepa Patagonica",
     elements: ["wind", "ice", "rock", "shadow", "storm"],
     habitats: ["mesetas de coiron", "canadones frios", "estepa ventosa", "cuevas con pinturas casi borradas", "bardas donde el viento canta bajo"],
-    species: ["guanaco", "mara patagonica", "choique", "puma", "zorro colorado", "peludo patagonico", "loica", "lagartija de las rocas"],
     palette: ["gris coiron, rojo canadon y blanco frio", "ocre viento y azul sombra", "marron guanaco y plata", "rojo loica y negro piedra"]
   },
   bosquePatagonico: {
     label: "Bosques Patagonicos",
     elements: ["plant", "ice", "water", "spore", "rock"],
     habitats: ["bosques de lenga y coihue", "lagos frios", "mallines entre arrayanes", "troncos caidos con hongos brillantes", "orillas donde el bosque toca nieve"],
-    species: ["huemul", "pudu", "maca tobiano", "carpintero gigante", "puma", "monito del monte", "ranita de Darwin", "chucao"],
     palette: ["verde lenga, nieve y cobre arrayan", "azul lago y marron corteza", "negro carpintero y rojo cresta", "musgo, hielo y rosa hongo"]
   },
   marArgentino: {
     label: "Mar Argentino",
     elements: ["water", "ice", "salt", "wind", "shadow"],
     habitats: ["restingas frias", "kelp submarino austral", "plataforma marina", "cuevas de espuma bajo acantilados", "playas donde la marea deja luces"],
-    species: ["ballena franca austral", "tonina overa", "pinguino de Magallanes", "lobo marino", "petrel", "cormoran", "elefante marino", "pez gallo"],
     palette: ["azul profundo, espuma y negro", "gris ballena y blanco sal", "verde kelp y plata fria", "ocre arena y violeta abisal"]
   },
   antartida: {
     label: "Antartida e islas australes",
     elements: ["ice", "water", "wind", "shadow", "rock"],
     habitats: ["playas de roca negra y nieve", "hielos costeros", "islas de viento blanco", "grietas azules que suenan de noche", "colonias abandonadas bajo aurora"],
-    species: ["pinguino emperador", "petrel gigante", "foca de Weddell", "orca", "skua", "albatros", "leopardo marino", "kril antartico"],
     palette: ["blanco hielo, negro roca y azul frio", "gris foca y celeste glacial", "negro ala y plata", "azul aurora y rojo tenue"]
   }
 };
@@ -177,21 +165,85 @@ export const bodyPartLabels = {
 };
 
 export const partTemplates = {
-  body: ["cuerpo robusto de", "torso bajo de", "lomo arqueado de", "pecho profundo de", "silueta pesada de", "cuerpo alargado y casi ceremonial de", "masa compacta con proporciones de"],
-  head: ["cabeza alerta de", "hocico de", "craneo ancho de", "pico modificado de", "rostro vigilante de", "mandibula exagerada de", "frente abovedada inspirada en"],
-  legs: ["patas veloces de", "garras excavadoras de", "zancadas de", "dedos palmeados de", "apoyos firmes de", "extremidades demasiado largas de", "manos prensiles derivadas de"],
-  tail: ["cola de", "apendice posterior inspirado en", "timon de", "cola defensiva de", "rastro de", "cola bifurcada basada en", "latigo caudal de"],
-  hide: ["cubierta basada en", "pelaje/escamas de", "piel adaptada de", "placas de", "membrana de", "manto irregular de", "coraza viva inspirada en"],
-  crest: ["cresta tomada de", "marca visible de", "ornamento de", "silueta secundaria de", "senal territorial de", "mascara natural de", "aureola organica basada en"],
-  sense: ["olfato de", "oido de", "vision de", "percepcion de", "instinto de", "sentido vibratorio de", "memoria espacial de"],
-  movement: ["se mueve como", "acecha como", "huye como", "gira como", "avanza como", "desaparece como", "se balancea como"]
+  body: [
+    "cuerpo alto y hueco, con costillas visibles como arcos de una capilla salvaje",
+    "torso bajo y ancho, cubierto de pliegues que parecen mapas de barro seco",
+    "silueta alargada, casi flotante, sostenida por una columna que brilla desde dentro",
+    "masa compacta de lomo curvo, con bolsas luminosas bajo la piel",
+    "cuerpo dividido en tres segmentos que se acomodan como piedras vivas",
+    "pecho profundo con una cavidad central donde late su elemento",
+    "tronco asimetrico, como si hubiera sido modelado por viento, agua y maldicion"
+  ],
+  head: [
+    "cabeza triangular sin hocico claro, con una corona de ojos pequenos",
+    "rostro cubierto por una mascara natural de hueso oscuro",
+    "craneo ancho con mandibula partida en dos placas moviles",
+    "frente transparente donde se ven destellos de su energia interna",
+    "cabeza baja con cuernos blandos que cambian de posicion",
+    "rostro sin boca visible hasta que ataca",
+    "cara larga, casi humana de lejos, pero imposible de sostener con la mirada"
+  ],
+  legs: [
+    "cuatro patas finas que pisan sin doblar la hierba",
+    "seis extremidades cortas con articulaciones invertidas",
+    "dos patas principales y dos brazos menores que salen del pecho",
+    "apoyos anchos como raices, capaces de cerrarse alrededor del suelo",
+    "piernas demasiado largas, con rodillas altas y andar ceremonial",
+    "garras blandas que dejan marcas circulares en vez de huellas",
+    "extremidades que se repliegan bajo el cuerpo cuando quiere deslizarse"
+  ],
+  tail: [
+    "cola bifurcada que se mueve aun cuando el cuerpo esta quieto",
+    "apendice largo con nudos de luz en la punta",
+    "rastro caudal hecho de fibras, humo o barro suspendido",
+    "cola corta cubierta de campanillas organicas mudas",
+    "latigo posterior que dibuja simbolos en el aire",
+    "cola pesada como un ancla ritual",
+    "apendice transparente donde se acumula el color del habitat"
+  ],
+  hide: [
+    "piel de textura cambiante, entre corteza, cuero viejo y vidrio opaco",
+    "manto de placas irregulares que se abren cuando respira",
+    "cubierta blanda con vetas luminosas bajo la superficie",
+    "pelaje corto mezclado con polvo, sal, polen o ceniza",
+    "membrana humeda que refleja un paisaje distinto al real",
+    "coraza viva que crece en patrones distintos cada vez",
+    "capa exterior con pequenas grietas por donde sale vapor elemental"
+  ],
+  crest: [
+    "aureola organica de espinas, semillas y fragmentos minerales",
+    "cresta dorsal que se despliega como un estandarte",
+    "anillo de protuberancias alrededor del cuello",
+    "marca luminosa que cambia segun su humor",
+    "hilera de pequenas torres oseas sobre el lomo",
+    "velo de fibras colgantes que cubre parte del rostro",
+    "ornamento lateral que parece una pieza de altar abandonado"
+  ],
+  sense: [
+    "percibe nombres propios como vibraciones en el suelo",
+    "detecta miedo por cambios de temperatura",
+    "ve rastros de humedad, sombra o electricidad en el aire",
+    "escucha promesas rotas a gran distancia",
+    "huele metal, lluvia o ceniza antes de que aparezcan",
+    "lee movimientos del habitat por la piel",
+    "siente cuando alguien cruza un limite invisible"
+  ],
+  movement: [
+    "avanza por tirones suaves, como si el suelo lo llamara",
+    "se desplaza sin mover todas sus patas a la vez",
+    "gira alrededor de su objetivo antes de decidir si atacarlo",
+    "desaparece detras de elementos del paisaje demasiado pequenos para ocultarlo",
+    "salta en silencio y cae con un sonido que llega tarde",
+    "se balancea como una rama pesada bajo viento inexistente",
+    "camina dejando una estela breve de su elemento"
+  ]
 };
 
 export const temperaments = [
   "territorial pero no cruel", "curiosa y dificil de domesticar", "silenciosa hasta que cambia el clima",
   "protectora de su zona de cria", "solitaria salvo durante tormentas", "astuta y memoriosa",
   "paciente, casi ceremonial", "nerviosa cuando cambia el viento", "mansa con quien respeta su territorio",
-  "caprichosa como animal de cuento", "rencorosa con quienes pronuncian mal su nombre", "juguetona pero peligrosa",
+  "caprichosa como entidad de cuento", "rencorosa con quienes pronuncian mal su nombre", "juguetona pero peligrosa",
   "devota de objetos brillantes", "asustadiza hasta que percibe mentira", "orgullosa de su guarida"
 ];
 
@@ -203,7 +255,7 @@ export const magicalTraits = [
   "puede cambiar una parte del cuerpo durante la muda estacional",
   "deja pequenos amuletos naturales donde marca territorio",
   "sus huesos suenan como bombo leguero cuando corre",
-  "imita llamados de animales reales para atraer curiosos",
+  "imita voces lejanas para atraer curiosos",
   "envejece hacia atras durante una semana despues de cada tormenta",
   "reconoce nombres propios y los guarda como si fueran olores",
   "sus cicatrices forman mapas incompletos de la ecorregion",
@@ -214,7 +266,7 @@ export const mythicBehaviors = [
   "roba brasas, plumas o piedras pequenas para construir nidos rituales",
   "protege senderos perdidos y confunde a quien entra sin permiso",
   "se deja ver solo en el borde entre dos habitats",
-  "adopta objetos humanos abandonados y les da uso biologico",
+  "adopta objetos humanos abandonados y les da un uso ritual",
   "marca pactos con tres vueltas alrededor de su visitante",
   "cambia de canto segun la estacion y el peligro cercano",
   "guarda memoria de inundaciones, incendios y nevadas antiguas",

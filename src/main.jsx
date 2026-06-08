@@ -358,7 +358,7 @@ function App() {
                     </button>
                   </div>
                 </div>
-                <p className="mt-3 text-sm text-stone-400">Inspirado en: {creature.parts[key].animal}</p>
+                <p className="mt-3 text-sm text-stone-400">Anatomia fantastica generada para esta criatura.</p>
               </article>
             ))}
           </section>
@@ -406,7 +406,6 @@ function generateCreature({ regionId, elementId, previous = null, locked = {}, f
   const region = ecoregions[regionId];
   const resolvedElementId = elementId === "any" || !region.elements.includes(elementId) ? random(region.elements) : elementId;
   const element = elements[resolvedElementId];
-  const animals = region.species;
 
   const parts = {};
   partKeys.forEach((key) => {
@@ -418,10 +417,8 @@ function generateCreature({ regionId, elementId, previous = null, locked = {}, f
       parts[key] = previous.parts[key];
       return;
     }
-    const animal = random(animals);
     parts[key] = {
-      animal,
-      text: `${random(partTemplates[key])} ${animal}`
+      text: random(partTemplates[key])
     };
   });
 
@@ -438,7 +435,7 @@ function generateCreature({ regionId, elementId, previous = null, locked = {}, f
   const palette = random(region.palette);
   const weakness = random(weaknesses[resolvedElementId]);
 
-  const description = `${name} es una criatura fantastica de ${region.label}: no existe como especie real, sino como hibrido de monte, mito y adaptacion extrema. Combina ${parts.body.text}, ${parts.head.text}, ${parts.legs.text} y ${parts.tail.text}; ademas presenta ${visualOddity}. Su ${parts.hide.text} manifiesta energia de tipo ${element.label.toLowerCase()}: ${mark}. Esa energia se explica porque ${elementOrigin}. Vive en ${habitat}, se comporta de forma ${temperament} y suele ${mythicBehavior}. Como rasgo sobrenatural, ${magicalTrait}. Ataca con ${attack}, se protege mediante ${defense} y su punto debil es ${weakness}. Paleta sugerida: ${palette}.`;
+  const description = `${name} es una entidad fantastica de ${region.label}: su forma nace del habitat, el elemento y una logica de bestiario magico. Tiene ${parts.body.text}, ${parts.head.text}, ${parts.legs.text} y ${parts.tail.text}; ademas presenta ${visualOddity}. Su cubierta es ${parts.hide.text} y manifiesta energia de tipo ${element.label.toLowerCase()}: ${mark}. Esa energia se explica porque ${elementOrigin}. Vive en ${habitat}, se comporta de forma ${temperament} y suele ${mythicBehavior}. Como rasgo sobrenatural, ${magicalTrait}. Ataca con ${attack}, se protege mediante ${defense} y su punto debil es ${weakness}. Paleta sugerida: ${palette}.`;
 
   return {
     id: crypto.randomUUID(),
