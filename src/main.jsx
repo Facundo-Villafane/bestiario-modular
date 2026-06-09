@@ -5,6 +5,8 @@ import {
   anthroAnatomy,
   anthroAppeal,
   anthroBodyTypes,
+  anthroClothingCoverage,
+  anthroExtraTraits,
   anthroGenders,
   anthroHooks,
   anthroPalettes,
@@ -35,6 +37,8 @@ const defaultAnthroFilters = {
   gender: "any",
   species: "any",
   bodyType: "any",
+  clothingCoverage: "any",
+  extraTrait: "sin rasgos extra",
   style: "any",
   appeal: "any",
   personality: "any",
@@ -64,6 +68,7 @@ function App() {
   const region = ecoregions[regionId];
   const allowedElements = region.elements;
   const effectiveElementId = elementId === "any" || allowedElements.includes(elementId) ? elementId : "any";
+  const resolvedAnthroFilters = { ...defaultAnthroFilters, ...anthroFilters };
 
   const availableElementOptions = useMemo(() => {
     return ["any", ...allowedElements];
@@ -110,7 +115,7 @@ function App() {
   }
 
   function regenerateAnthro() {
-    setAnthro(generateAnthroCharacter(anthroFilters));
+    setAnthro(generateAnthroCharacter(resolvedAnthroFilters));
     notify("Personaje anthro generado.");
   }
 
@@ -342,14 +347,16 @@ function App() {
                 Personajes adultos furry/anthro con anatomia expresiva, diversidad corporal y atractivo visual sugerente no explicito.
               </p>
               <div className="mt-4 grid gap-3">
-                <AnthroSelect label="Genero" value={anthroFilters.gender} onChange={(value) => updateAnthroFilter("gender", value)} options={anthroGenders} />
-                <AnthroSelect label="Base" value={anthroFilters.species} onChange={(value) => updateAnthroFilter("species", value)} options={anthroSpecies} />
-                <AnthroSelect label="Cuerpo" value={anthroFilters.bodyType} onChange={(value) => updateAnthroFilter("bodyType", value)} options={anthroBodyTypes} />
-                <AnthroSelect label="Estilo" value={anthroFilters.style} onChange={(value) => updateAnthroFilter("style", value)} options={anthroStyle} />
-                <AnthroSelect label="Appeal" value={anthroFilters.appeal} onChange={(value) => updateAnthroFilter("appeal", value)} options={anthroAppeal} />
-                <AnthroSelect label="Personalidad" value={anthroFilters.personality} onChange={(value) => updateAnthroFilter("personality", value)} options={anthroPersonalities} />
-                <AnthroSelect label="Rol" value={anthroFilters.hook} onChange={(value) => updateAnthroFilter("hook", value)} options={anthroHooks} />
-                <AnthroSelect label="Paleta" value={anthroFilters.palette} onChange={(value) => updateAnthroFilter("palette", value)} options={anthroPalettes} />
+                <AnthroSelect label="Genero" value={resolvedAnthroFilters.gender} onChange={(value) => updateAnthroFilter("gender", value)} options={anthroGenders} />
+                <AnthroSelect label="Base" value={resolvedAnthroFilters.species} onChange={(value) => updateAnthroFilter("species", value)} options={anthroSpecies} />
+                <AnthroSelect label="Cuerpo" value={resolvedAnthroFilters.bodyType} onChange={(value) => updateAnthroFilter("bodyType", value)} options={anthroBodyTypes} />
+                <AnthroSelect label="Ropa" value={resolvedAnthroFilters.clothingCoverage} onChange={(value) => updateAnthroFilter("clothingCoverage", value)} options={anthroClothingCoverage} />
+                <AnthroSelect label="Estilo" value={resolvedAnthroFilters.style} onChange={(value) => updateAnthroFilter("style", value)} options={anthroStyle} />
+                <AnthroSelect label="Rasgo extra" value={resolvedAnthroFilters.extraTrait} onChange={(value) => updateAnthroFilter("extraTrait", value)} options={anthroExtraTraits} />
+                <AnthroSelect label="Appeal" value={resolvedAnthroFilters.appeal} onChange={(value) => updateAnthroFilter("appeal", value)} options={anthroAppeal} />
+                <AnthroSelect label="Personalidad" value={resolvedAnthroFilters.personality} onChange={(value) => updateAnthroFilter("personality", value)} options={anthroPersonalities} />
+                <AnthroSelect label="Rol" value={resolvedAnthroFilters.hook} onChange={(value) => updateAnthroFilter("hook", value)} options={anthroHooks} />
+                <AnthroSelect label="Paleta" value={resolvedAnthroFilters.palette} onChange={(value) => updateAnthroFilter("palette", value)} options={anthroPalettes} />
               </div>
             </section>
           )}
@@ -516,7 +523,9 @@ function AnthroPanel({ anthro, copyText, regenerateAnthro }) {
           <Fact label="Genero" value={anthro.gender} />
           <Fact label="Base" value={anthro.species} />
           <Fact label="Cuerpo" value={anthro.bodyType} />
+          <Fact label="Ropa" value={anthro.clothingCoverage} />
           <Fact label="Anatomia" value={anthro.anatomy} />
+          <Fact label="Rasgo extra" value={anthro.extraTrait} />
           <Fact label="Estilo" value={anthro.style} />
           <Fact label="Appeal" value={anthro.appeal} />
           <Fact label="Personalidad" value={anthro.personality} />
@@ -627,19 +636,23 @@ function pickFiltered(options, value) {
 }
 
 function generateAnthroCharacter(filters = defaultAnthroFilters) {
+  const resolvedFilters = { ...defaultAnthroFilters, ...filters };
   const name = makeAnthroName();
-  const gender = pickFiltered(anthroGenders, filters.gender);
-  const species = pickFiltered(anthroSpecies, filters.species);
-  const bodyType = pickFiltered(anthroBodyTypes, filters.bodyType);
+  const gender = pickFiltered(anthroGenders, resolvedFilters.gender);
+  const species = pickFiltered(anthroSpecies, resolvedFilters.species);
+  const bodyType = pickFiltered(anthroBodyTypes, resolvedFilters.bodyType);
+  const clothingCoverage = pickFiltered(anthroClothingCoverage, resolvedFilters.clothingCoverage);
+  const extraTrait = pickFiltered(anthroExtraTraits, resolvedFilters.extraTrait);
   const anatomy = random(anthroAnatomy);
-  const style = pickFiltered(anthroStyle, filters.style);
-  const appeal = pickFiltered(anthroAppeal, filters.appeal);
-  const personality = pickFiltered(anthroPersonalities, filters.personality);
+  const style = pickFiltered(anthroStyle, resolvedFilters.style);
+  const appeal = pickFiltered(anthroAppeal, resolvedFilters.appeal);
+  const personality = pickFiltered(anthroPersonalities, resolvedFilters.personality);
   const pose = random(anthroPoses);
-  const hook = pickFiltered(anthroHooks, filters.hook);
-  const palette = pickFiltered(anthroPalettes, filters.palette);
-  const description = `${name} es un personaje anthro adulto de genero/presentacion ${gender}: ${species}, ${bodyType}. Su anatomia expresiva destaca por ${anatomy}. Viste ${style}. Su atractivo visual es sugerente pero no explicito: ${appeal}. Tiene una personalidad ${personality} y funciona como ${hook}. Pose sugerida: ${pose}. Paleta: ${palette}.`;
-  const imagePrompt = `adult anthro character, gender presentation ${gender}, ${species}, expressive anatomy, ${bodyType}, ${anatomy}, ${style}, ${appeal}, ${pose}, non-explicit, stylish character design, palette ${palette}`;
+  const hook = pickFiltered(anthroHooks, resolvedFilters.hook);
+  const palette = pickFiltered(anthroPalettes, resolvedFilters.palette);
+  const extraLine = extraTrait === "sin rasgos extra" ? "No lleva cuernos, alas ni rasgos extra fuera de su base." : `Rasgo extra elegido: ${extraTrait}.`;
+  const description = `${name} es un personaje anthro adulto de genero/presentacion ${gender}: ${species}, ${bodyType}. Lo principal del diseno es la ropa y la pose: usa ${style}; cobertura: ${clothingCoverage}. Pose sugerida: ${pose}. Su anatomia expresiva destaca por ${anatomy}. ${extraLine} Su atractivo visual es sugerente pero no explicito: ${appeal}. Personalidad: ${personality}. Concepto breve: ${hook}. Paleta: ${palette}.`;
+  const imagePrompt = `adult anthro character, gender presentation ${gender}, ${species}, expressive anatomy, ${bodyType}, ${anatomy}, clothing coverage: ${clothingCoverage}, outfit: ${style}, extra trait: ${extraTrait}, pose: ${pose}, visible fur focus, non-explicit, stylish character design, simple plain background, palette ${palette}`;
 
   return {
     id: crypto.randomUUID(),
@@ -648,6 +661,8 @@ function generateAnthroCharacter(filters = defaultAnthroFilters) {
     gender,
     species,
     bodyType,
+    clothingCoverage,
+    extraTrait,
     anatomy,
     style,
     appeal,
@@ -693,7 +708,9 @@ ${anthro.description}
 - Genero/presentacion: ${anthro.gender}
 - Base: ${anthro.species}
 - Cuerpo: ${anthro.bodyType}
+- Ropa/cobertura: ${anthro.clothingCoverage}
 - Anatomia expresiva: ${anthro.anatomy}
+- Rasgo extra: ${anthro.extraTrait}
 - Estilo: ${anthro.style}
 - Appeal visual: ${anthro.appeal}
 - Personalidad: ${anthro.personality}

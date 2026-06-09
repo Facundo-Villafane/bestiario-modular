@@ -388,8 +388,6 @@ export const anthroAnatomy = [
   "orejas enormes que delatan cada cambio de humor",
   "manos grandes con almohadillas visibles y dedos expresivos",
   "piernas digitigradas elegantes, pensadas para poses dinamicas",
-  "cuernos pulidos que enmarcan la cabeza como una corona natural",
-  "alas pequenas no aptas para volar, usadas como gesto corporal",
   "melena gruesa que cae sobre un hombro",
   "escamas finas en cuello, claviculas y antebrazos",
   "garras cortas cuidadas, mas esteticas que amenazantes",
@@ -398,10 +396,37 @@ export const anthroAnatomy = [
   "hocico corto con sonrisa lateral dificil de leer"
 ];
 
+export const anthroExtraTraits = [
+  "sin rasgos extra",
+  "cuernos cortos y pulidos",
+  "cuernos largos y elegantes",
+  "alas pequenas decorativas",
+  "alas grandes plegadas",
+  "cola secundaria",
+  "orejas extra expresivas",
+  "marcas luminosas en el pelaje",
+  "mechon o melena muy marcada",
+  "cicatrices esteticas suaves",
+  "escamas parciales sobre hombros y cuello",
+  "antenas finas y expresivas"
+];
+
+export const anthroClothingCoverage = [
+  "poca ropa, con fur visible y cobertura no explicita",
+  "ropa ligera que deja ver brazos, hombros, abdomen o piernas con buen gusto",
+  "ropa media, equilibrando silueta, fur visible y accesorios",
+  "ropa ajustada no reveladora, enfocada en silueta y pose",
+  "ropa completa, elegante y estructurada",
+  "capas y accesorios, con menos enfasis en fur visible"
+];
+
 export const anthroStyle = [
-  "streetwear nocturno con chaqueta corta y botas pesadas",
+  "top corto, shorts altos, guantes y botas, dejando bastante fur visible sin desnudez",
+  "arnes decorativo sobre top seguro, pantalon bajo y accesorios de escenario",
+  "ropa deportiva ligera con top ajustado, shorts y vendas decorativas",
+  "streetwear nocturno con chaqueta corta abierta, top simple y botas pesadas",
   "traje de escenario ajustado, elegante y no revelador",
-  "ropa deportiva retro con colores contrastados",
+  "ropa deportiva retro con colores contrastados y fur visible en brazos y piernas",
   "abrigo largo abierto sobre prendas simples y bien entalladas",
   "look de club de jazz: guantes, cuello alto y accesorios dorados",
   "ropa de aventurero urbano con cinturones, bolsillos y telas gastadas",
@@ -451,10 +476,8 @@ export const anthroPoses = [
 ];
 
 export const anthroHooks = [
-  "cantante de bar secreto", "mensajero de una ciudad vertical", "duelista de salon",
-  "mecanico de motos imposibles", "bailarin de competencia clandestina", "guardaespaldas demasiado elegante",
-  "ilusionista callejero", "capitan de nave pequena", "ladron de reliquias con codigo moral",
-  "modelo de moda arcana", "chef nocturno de mercado raro", "detective de casos sentimentales"
+  "cantante", "mensajero", "duelista", "mecanico", "bailarin", "guardaespaldas elegante",
+  "ilusionista", "capitan", "ladron con codigo moral", "modelo de moda", "chef nocturno", "detective"
 ];
 
 export const anthroPalettes = [
