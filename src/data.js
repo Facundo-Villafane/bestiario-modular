@@ -356,3 +356,105 @@ export const weaknesses = {
   shadow: ["luz plana de mediodia", "superficies reflectantes", "fuego bajo", "nombres dichos en voz alta"],
   spore: ["viento seco", "frio extremo", "fuego controlado", "perfume de flores citricas"]
 };
+
+export const anthroSpecies = [
+  "felino de orejas largas", "canido de hocico fino", "zorro urbano", "lobo de pelaje pesado",
+  "ciervo nocturno", "conejo atletico", "murcielago elegante", "reptil de escamas suaves",
+  "dragon menor", "ave rapaz antropomorfa", "caballo estilizado", "cabra de cuernos curvos",
+  "nutria de rio", "mapache de fantasia", "hiena sonriente", "pantera de salon"
+];
+
+export const anthroBodyTypes = [
+  "alto y esbelto, con extremidades largas y postura relajada",
+  "compacto y fuerte, con hombros marcados y centro de gravedad bajo",
+  "curvilineo y suave, con cintura definida y presencia escenica",
+  "robusto y acolchado, con silueta amable y poderosa",
+  "delgado y nervioso, con articulaciones expresivas y manos inquietas",
+  "musculatura elegante, mas de bailarin que de guerrero",
+  "figura triangular, espalda amplia y caderas estrechas",
+  "figura de reloj suave, balanceada y segura de si misma",
+  "bajito, atletico y muy expresivo en cola y orejas",
+  "alto, pesado y ceremonial, con movimientos lentos pero precisos"
+];
+
+export const anthroAnatomy = [
+  "cola larga que actua como contrapeso emocional",
+  "orejas enormes que delatan cada cambio de humor",
+  "manos grandes con almohadillas visibles y dedos expresivos",
+  "piernas digitigradas elegantes, pensadas para poses dinamicas",
+  "cuernos pulidos que enmarcan la cabeza como una corona natural",
+  "alas pequenas no aptas para volar, usadas como gesto corporal",
+  "melena gruesa que cae sobre un hombro",
+  "escamas finas en cuello, claviculas y antebrazos",
+  "garras cortas cuidadas, mas esteticas que amenazantes",
+  "cola doble, una juguetona y otra casi siempre quieta",
+  "ojos grandes con parpados pesados y mirada teatral",
+  "hocico corto con sonrisa lateral dificil de leer"
+];
+
+export const anthroStyle = [
+  "streetwear nocturno con chaqueta corta y botas pesadas",
+  "traje de escenario ajustado, elegante y no revelador",
+  "ropa deportiva retro con colores contrastados",
+  "abrigo largo abierto sobre prendas simples y bien entalladas",
+  "look de club de jazz: guantes, cuello alto y accesorios dorados",
+  "ropa de aventurero urbano con cinturones, bolsillos y telas gastadas",
+  "conjunto minimalista de tela elastica, pensado para movimiento",
+  "uniforme fantastico reinterpretado como moda de pasarela",
+  "camisa amplia metida a medias, pantalon alto y botas limpias",
+  "capas livianas que enfatizan silueta sin mostrar de mas"
+];
+
+export const anthroAppeal = [
+  "atractivo por seguridad corporal y lenguaje de mirada",
+  "sugerente por postura confiada, sin desnudez ni explicitud",
+  "encanto visual basado en contraste entre elegancia y peligro suave",
+  "appeal de personaje carismatico: sonrisa medida, pose estable y presencia fuerte",
+  "sensualidad sutil en la forma de apoyar peso y mover la cola",
+  "atractivo de silueta clara, gestos limpios y ropa que acompana el cuerpo",
+  "magnetismo por expresion tranquila y ojos atentos",
+  "energia coqueta pero controlada, mas insinuada que mostrada",
+  "presencia escenica de alguien que sabe que lo estan mirando",
+  "belleza rara, expresiva y un poco intimidante"
+];
+
+export const anthroPersonalities = [
+  "coqueto, rapido para bromear y dificil de impresionar",
+  "sereno, protector y con humor seco",
+  "dramatico, teatral y muy consciente de su imagen",
+  "timido al hablar, pero audaz al moverse",
+  "competitivo, elegante y algo vanidoso",
+  "dulce, intenso y con mirada demasiado directa",
+  "misterioso, de pocas palabras y gestos calculados",
+  "jugueton, impulsivo y facil de querer",
+  "sofisticado, observador y un poco peligroso",
+  "calido, fisico y expresivo con orejas, cola y manos"
+];
+
+export const anthroPoses = [
+  "apoyado contra una pared, una mano en el bolsillo y la cola marcando ritmo",
+  "mirando por encima del hombro con una sonrisa apenas insinuada",
+  "sentado de lado, espalda recta y piernas cruzadas con naturalidad",
+  "de pie bajo una luz lateral, mostrando una silueta muy clara",
+  "ajustandose un guante mientras evita mirar de frente",
+  "en medio paso, como si acabara de girar al escuchar su nombre",
+  "con brazos cruzados y orejas orientadas hacia quien observa",
+  "sosteniendo un accesorio pequeno que revela su oficio",
+  "inclinando la cabeza, entre desafio y curiosidad",
+  "relajado, con peso sobre una pierna y expresion de confianza"
+];
+
+export const anthroHooks = [
+  "cantante de bar secreto", "mensajero de una ciudad vertical", "duelista de salon",
+  "mecanico de motos imposibles", "bailarin de competencia clandestina", "guardaespaldas demasiado elegante",
+  "ilusionista callejero", "capitan de nave pequena", "ladron de reliquias con codigo moral",
+  "modelo de moda arcana", "chef nocturno de mercado raro", "detective de casos sentimentales"
+];
+
+export const anthroPalettes = [
+  "negro tinta, crema y dorado viejo", "gris humo, azul petroleo y blanco frio",
+  "cobre, chocolate y verde neon suave", "lavanda oscuro, plata y rosa apagado",
+  "rojo vino, marfil y sombra violeta", "naranja quemado, negro mate y turquesa",
+  "arena, carbon y amarillo electrico", "azul noche, perla y cuero marron",
+  "verde botella, hueso y bronce", "blanco calido, cereza oscura y grafito"
+];

@@ -2,6 +2,15 @@ import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Copy, Dices, Download, Lock, LogIn, LogOut, RefreshCcw, Save, Sparkles, Unlock, UserCircle } from "lucide-react";
 import {
+  anthroAnatomy,
+  anthroAppeal,
+  anthroBodyTypes,
+  anthroHooks,
+  anthroPalettes,
+  anthroPersonalities,
+  anthroPoses,
+  anthroSpecies,
+  anthroStyle,
   bodyPartLabels,
   ecoregions,
   elements,
@@ -17,13 +26,19 @@ import "./styles.css";
 const STORAGE_KEY = "bestiario-argentino:vite:v1";
 const regionIds = Object.keys(ecoregions);
 const partKeys = Object.keys(bodyPartLabels);
+const tabs = {
+  bestiary: "Bestiario",
+  anthro: "Anthro"
+};
 
 function App() {
+  const [activeTab, setActiveTab] = useStored("activeTab", "bestiary");
   const [regionId, setRegionId] = useStored("regionId", "ibera");
   const [elementId, setElementId] = useStored("elementId", "any");
   const [locked, setLocked] = useStored("locked", {});
   const [saved, setSaved] = useStored("saved", []);
   const [creature, setCreature] = useStored("creature", () => generateCreature({ regionId: "ibera", elementId: "any" }));
+  const [anthro, setAnthro] = useStored("anthro", () => generateAnthroCharacter());
   const [enhanced, setEnhanced] = useStored("enhanced", "");
   const [enhancing, setEnhancing] = useState(false);
   const [enhanceError, setEnhanceError] = useState("");
@@ -80,6 +95,11 @@ function App() {
     setEnhanced("");
     setEnhanceError("");
     notify("Criatura generada.");
+  }
+
+  function regenerateAnthro() {
+    setAnthro(generateAnthroCharacter());
+    notify("Personaje anthro generado.");
   }
 
   function rerollPart(partKey) {
@@ -217,11 +237,12 @@ function App() {
   }
 
   function downloadJson() {
-    const blob = new Blob([JSON.stringify({ ...creature, enhanced }, null, 2)], { type: "application/json" });
+    const payload = activeTab === "anthro" ? anthro : { ...creature, enhanced };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${slug(creature.name)}.json`;
+    link.download = `${slug(payload.name)}.json`;
     document.body.append(link);
     link.click();
     link.remove();
@@ -247,6 +268,17 @@ function App() {
             <p className="copy-text mt-2 text-sm leading-6 text-stone-400">
               Entidades inventadas a partir de habitats argentinos, elementos y rarezas de bestiario.
             </p>
+            <div className="mt-4 grid grid-cols-2 gap-2 rounded-lg border border-stone-700 bg-stone-950 p-1">
+              {Object.entries(tabs).map(([id, label]) => (
+                <button
+                  key={id}
+                  className={activeTab === id ? "tab-active" : "tab"}
+                  onClick={() => setActiveTab(id)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
             <div className="mt-4 rounded-lg border border-stone-700 bg-stone-950 p-3">
               {user ? (
                 <div className="flex items-center gap-3">
@@ -271,34 +303,53 @@ function App() {
             </div>
           </section>
 
-          <section className="surface p-4">
-            <label className="label" htmlFor="region">Ecorregion</label>
-            <select id="region" className="select" value={regionId} onChange={(event) => handleRegion(event.target.value)}>
-              {regionIds.map((id) => <option key={id} value={id}>{ecoregions[id].label}</option>)}
-            </select>
+          {activeTab === "bestiary" ? (
+            <section className="surface p-4">
+              <label className="label" htmlFor="region">Ecorregion</label>
+              <select id="region" className="select" value={regionId} onChange={(event) => handleRegion(event.target.value)}>
+                {regionIds.map((id) => <option key={id} value={id}>{ecoregions[id].label}</option>)}
+              </select>
 
-            <label className="label mt-4" htmlFor="element">Elemento</label>
-            <select id="element" className="select" value={effectiveElementId} onChange={(event) => setElementId(event.target.value)}>
-              {availableElementOptions.map((id) => <option key={id} value={id}>{id === "any" ? "Cualquiera compatible" : elements[id].label}</option>)}
-            </select>
+              <label className="label mt-4" htmlFor="element">Elemento</label>
+              <select id="element" className="select" value={effectiveElementId} onChange={(event) => setElementId(event.target.value)}>
+                {availableElementOptions.map((id) => <option key={id} value={id}>{id === "any" ? "Cualquiera compatible" : elements[id].label}</option>)}
+              </select>
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              {allowedElements.map((id) => <span className="pill" key={id}>{elements[id].label}</span>)}
-            </div>
-          </section>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {allowedElements.map((id) => <span className="pill" key={id}>{elements[id].label}</span>)}
+              </div>
+            </section>
+          ) : (
+            <section className="surface p-4">
+              <p className="text-xs font-black uppercase tracking-normal text-amber-300">Anthro Character</p>
+              <p className="copy-text mt-2 text-sm leading-6 text-stone-400">
+                Personajes adultos furry/anthro con anatomia expresiva, diversidad corporal y atractivo visual sugerente no explicito.
+              </p>
+            </section>
+          )}
 
           <section className="surface p-4">
             <div className="grid gap-2">
-              <button className="btn-primary" onClick={() => regenerate()}><Dices size={18} /> Randomizar</button>
-              <button className="btn" onClick={() => regenerate({ onlyUnlocked: true })}><RefreshCcw size={18} /> Solo desbloqueados</button>
-              <button className="btn" onClick={saveCreature} disabled={!user || cloudLoading}><Save size={18} /> {cloudLoading ? "Sincronizando..." : "Guardar"}</button>
-              <button className="btn" onClick={refreshCloud} disabled={!user || cloudLoading}><RefreshCcw size={18} /> Cargar Firebase</button>
-              <button className="btn" onClick={() => copyText(formatSheet(creature, enhanced), "Ficha copiada.")}><Copy size={18} /> Copiar ficha</button>
+              {activeTab === "bestiary" ? (
+                <>
+                  <button className="btn-primary" onClick={() => regenerate()}><Dices size={18} /> Randomizar</button>
+                  <button className="btn" onClick={() => regenerate({ onlyUnlocked: true })}><RefreshCcw size={18} /> Solo desbloqueados</button>
+                  <button className="btn" onClick={saveCreature} disabled={!user || cloudLoading}><Save size={18} /> {cloudLoading ? "Sincronizando..." : "Guardar"}</button>
+                  <button className="btn" onClick={refreshCloud} disabled={!user || cloudLoading}><RefreshCcw size={18} /> Cargar Firebase</button>
+                  <button className="btn" onClick={() => copyText(formatSheet(creature, enhanced), "Ficha copiada.")}><Copy size={18} /> Copiar ficha</button>
+                </>
+              ) : (
+                <>
+                  <button className="btn-primary" onClick={regenerateAnthro}><Dices size={18} /> Randomizar anthro</button>
+                  <button className="btn" onClick={() => copyText(formatAnthroSheet(anthro), "Ficha anthro copiada.")}><Copy size={18} /> Copiar ficha</button>
+                </>
+              )}
               <button className="btn" onClick={downloadJson}><Download size={18} /> JSON</button>
             </div>
           </section>
         </aside>
 
+        {activeTab === "bestiary" ? (
         <section className="min-w-0 space-y-4">
           <section className="surface p-4 sm:p-5">
             <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -385,6 +436,9 @@ function App() {
             </div>
           </section>
         </section>
+        ) : (
+        <AnthroPanel anthro={anthro} copyText={copyText} regenerateAnthro={regenerateAnthro} />
+        )}
       </div>
       {toast ? (
         <div className="fixed bottom-4 left-1/2 max-w-[calc(100vw-24px)] -translate-x-1/2 rounded-lg border border-amber-500 bg-stone-900 px-4 py-3 text-sm">
@@ -401,6 +455,63 @@ function Fact({ label, value }) {
       <strong className="block text-xs uppercase tracking-normal text-amber-300">{label}</strong>
       <span className="copy-text mt-1 block text-sm leading-5 text-stone-300">{value}</span>
     </div>
+  );
+}
+
+function AnthroPanel({ anthro, copyText, regenerateAnthro }) {
+  return (
+    <section className="min-w-0 space-y-4">
+      <section className="surface p-4 sm:p-5">
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div>
+            <p className="text-xs font-black uppercase tracking-normal text-amber-300">Anthro / Non-explicit appeal</p>
+            <h2 className="copy-text mt-2 text-3xl font-black leading-none text-stone-50 sm:text-5xl">{anthro.name}</h2>
+          </div>
+          <button className="btn-primary w-full md:w-auto" onClick={() => copyText(anthro.description, "Descripcion anthro copiada.")}>
+            <Copy size={18} /> Copiar descripcion
+          </button>
+        </div>
+
+        <p className="copy-text mt-5 max-w-4xl text-lg leading-8 text-stone-200">{anthro.description}</p>
+
+        <div className="mt-5 grid min-w-0 gap-2 lg:grid-cols-2 2xl:grid-cols-4">
+          <Fact label="Base" value={anthro.species} />
+          <Fact label="Cuerpo" value={anthro.bodyType} />
+          <Fact label="Anatomia" value={anthro.anatomy} />
+          <Fact label="Estilo" value={anthro.style} />
+          <Fact label="Appeal" value={anthro.appeal} />
+          <Fact label="Personalidad" value={anthro.personality} />
+          <Fact label="Pose" value={anthro.pose} />
+          <Fact label="Paleta" value={anthro.palette} />
+        </div>
+
+        <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+          <button className="btn-primary" onClick={regenerateAnthro}>
+            <Dices size={18} /> Randomizar anthro
+          </button>
+          <button className="btn" onClick={() => copyText(formatAnthroSheet(anthro), "Ficha anthro copiada.")}>
+            <Copy size={18} /> Copiar ficha
+          </button>
+        </div>
+      </section>
+
+      <section className="grid min-w-0 gap-3 lg:grid-cols-2 2xl:grid-cols-3">
+        <article className="surface p-4">
+          <p className="text-xs font-black uppercase tracking-normal text-stone-500">Silueta</p>
+          <h3 className="copy-text mt-1 text-base font-bold leading-6 text-stone-100">{anthro.bodyType}</h3>
+          <p className="copy-text mt-3 text-sm text-stone-400">{anthro.anatomy}</p>
+        </article>
+        <article className="surface p-4">
+          <p className="text-xs font-black uppercase tracking-normal text-stone-500">Visual Appeal</p>
+          <h3 className="copy-text mt-1 text-base font-bold leading-6 text-stone-100">{anthro.appeal}</h3>
+          <p className="copy-text mt-3 text-sm text-stone-400">Sugerente por pose, expresion y diseno; no explicito.</p>
+        </article>
+        <article className="surface p-4">
+          <p className="text-xs font-black uppercase tracking-normal text-stone-500">Prompt base</p>
+          <h3 className="copy-text mt-1 text-base font-bold leading-6 text-stone-100">{anthro.imagePrompt}</h3>
+        </article>
+      </section>
+    </section>
   );
 }
 
@@ -466,6 +577,44 @@ function makeName() {
   return `${random(prefixes)}${random(middles)}${random(endings)} ${random(titles)}`;
 }
 
+function makeAnthroName() {
+  const prefixes = ["Vara", "Riven", "Koa", "Milo", "Sasha", "Niko", "Lior", "Zara", "Kael", "Runa", "Tavi", "Eron", "Mara", "Lux", "Noa", "Vesper"];
+  const surnames = ["Velvet", "Cross", "Nox", "Vale", "Rook", "Fable", "Sable", "Cinder", "Morrow", "Vance", "Kissel", "Dusk", "Aster", "Wilde"];
+  return `${random(prefixes)} ${random(surnames)}`;
+}
+
+function generateAnthroCharacter() {
+  const name = makeAnthroName();
+  const species = random(anthroSpecies);
+  const bodyType = random(anthroBodyTypes);
+  const anatomy = random(anthroAnatomy);
+  const style = random(anthroStyle);
+  const appeal = random(anthroAppeal);
+  const personality = random(anthroPersonalities);
+  const pose = random(anthroPoses);
+  const hook = random(anthroHooks);
+  const palette = random(anthroPalettes);
+  const description = `${name} es un personaje anthro adulto: ${species}, ${bodyType}. Su anatomia expresiva destaca por ${anatomy}. Viste ${style}. Su atractivo visual es sugerente pero no explicito: ${appeal}. Tiene una personalidad ${personality} y funciona como ${hook}. Pose sugerida: ${pose}. Paleta: ${palette}.`;
+  const imagePrompt = `adult anthro ${species}, expressive anatomy, ${bodyType}, ${anatomy}, ${style}, ${appeal}, ${pose}, non-explicit, stylish character design, palette ${palette}`;
+
+  return {
+    id: crypto.randomUUID(),
+    type: "anthro",
+    name,
+    species,
+    bodyType,
+    anatomy,
+    style,
+    appeal,
+    personality,
+    pose,
+    hook,
+    palette,
+    description,
+    imagePrompt
+  };
+}
+
 function formatSheet(creature, enhanced = "") {
   const partLines = partKeys.map((key) => `- ${bodyPartLabels[key]}: ${creature.parts[key].text}`).join("\n");
   const enhancedSection = enhanced ? `\n## Ficha IA\n${enhanced}\n` : "";
@@ -487,6 +636,27 @@ ${partLines}
 - Conducta: ${creature.mythicBehavior || ""}
 - Silueta: ${creature.visualOddity || ""}
 ${enhancedSection}
+`;
+}
+
+function formatAnthroSheet(anthro) {
+  return `# ${anthro.name}
+
+${anthro.description}
+
+## Rasgos
+- Base: ${anthro.species}
+- Cuerpo: ${anthro.bodyType}
+- Anatomia expresiva: ${anthro.anatomy}
+- Estilo: ${anthro.style}
+- Appeal visual: ${anthro.appeal}
+- Personalidad: ${anthro.personality}
+- Rol/Hook: ${anthro.hook}
+- Pose: ${anthro.pose}
+- Paleta: ${anthro.palette}
+
+## Prompt visual
+${anthro.imagePrompt}
 `;
 }
 

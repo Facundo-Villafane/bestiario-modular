@@ -38,6 +38,14 @@
     @apply rounded-full border border-amber-500 bg-stone-950 px-2.5 py-1 text-xs font-bold text-amber-200;
   }
 
+  .tab {
+    @apply min-h-10 rounded-md px-3 py-2 text-sm font-bold text-stone-400;
+  }
+
+  .tab-active {
+    @apply min-h-10 rounded-md bg-amber-400 px-3 py-2 text-sm font-black text-stone-950;
+  }
+
   .surface {
     @apply min-w-0 overflow-hidden rounded-lg border border-stone-700 bg-stone-900;
   }
