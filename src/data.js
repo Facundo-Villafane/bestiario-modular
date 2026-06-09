@@ -364,6 +364,12 @@ export const anthroSpecies = [
   "nutria de rio", "mapache de fantasia", "hiena sonriente", "pantera de salon"
 ];
 
+export const anthroGenders = [
+  "femenino", "masculino", "no binario", "androgino", "genderfluid",
+  "agenero", "transfemenino", "transmasculino", "masc suave", "femme fuerte",
+  "presentacion ambigua", "presentacion glam"
+];
+
 export const anthroBodyTypes = [
   "alto y esbelto, con extremidades largas y postura relajada",
   "compacto y fuerte, con hombros marcados y centro de gravedad bajo",

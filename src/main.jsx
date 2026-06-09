@@ -5,6 +5,7 @@ import {
   anthroAnatomy,
   anthroAppeal,
   anthroBodyTypes,
+  anthroGenders,
   anthroHooks,
   anthroPalettes,
   anthroPersonalities,
@@ -30,6 +31,16 @@ const tabs = {
   bestiary: "Bestiario",
   anthro: "Anthro"
 };
+const defaultAnthroFilters = {
+  gender: "any",
+  species: "any",
+  bodyType: "any",
+  style: "any",
+  appeal: "any",
+  personality: "any",
+  hook: "any",
+  palette: "any"
+};
 
 function App() {
   const [activeTab, setActiveTab] = useStored("activeTab", "bestiary");
@@ -38,7 +49,8 @@ function App() {
   const [locked, setLocked] = useStored("locked", {});
   const [saved, setSaved] = useStored("saved", []);
   const [creature, setCreature] = useStored("creature", () => generateCreature({ regionId: "ibera", elementId: "any" }));
-  const [anthro, setAnthro] = useStored("anthro", () => generateAnthroCharacter());
+  const [anthroFilters, setAnthroFilters] = useStored("anthroFilters", defaultAnthroFilters);
+  const [anthro, setAnthro] = useStored("anthro", () => generateAnthroCharacter(defaultAnthroFilters));
   const [enhanced, setEnhanced] = useStored("enhanced", "");
   const [enhancing, setEnhancing] = useState(false);
   const [enhanceError, setEnhanceError] = useState("");
@@ -98,8 +110,12 @@ function App() {
   }
 
   function regenerateAnthro() {
-    setAnthro(generateAnthroCharacter());
+    setAnthro(generateAnthroCharacter(anthroFilters));
     notify("Personaje anthro generado.");
+  }
+
+  function updateAnthroFilter(key, value) {
+    setAnthroFilters({ ...anthroFilters, [key]: value });
   }
 
   function rerollPart(partKey) {
@@ -325,6 +341,16 @@ function App() {
               <p className="copy-text mt-2 text-sm leading-6 text-stone-400">
                 Personajes adultos furry/anthro con anatomia expresiva, diversidad corporal y atractivo visual sugerente no explicito.
               </p>
+              <div className="mt-4 grid gap-3">
+                <AnthroSelect label="Genero" value={anthroFilters.gender} onChange={(value) => updateAnthroFilter("gender", value)} options={anthroGenders} />
+                <AnthroSelect label="Base" value={anthroFilters.species} onChange={(value) => updateAnthroFilter("species", value)} options={anthroSpecies} />
+                <AnthroSelect label="Cuerpo" value={anthroFilters.bodyType} onChange={(value) => updateAnthroFilter("bodyType", value)} options={anthroBodyTypes} />
+                <AnthroSelect label="Estilo" value={anthroFilters.style} onChange={(value) => updateAnthroFilter("style", value)} options={anthroStyle} />
+                <AnthroSelect label="Appeal" value={anthroFilters.appeal} onChange={(value) => updateAnthroFilter("appeal", value)} options={anthroAppeal} />
+                <AnthroSelect label="Personalidad" value={anthroFilters.personality} onChange={(value) => updateAnthroFilter("personality", value)} options={anthroPersonalities} />
+                <AnthroSelect label="Rol" value={anthroFilters.hook} onChange={(value) => updateAnthroFilter("hook", value)} options={anthroHooks} />
+                <AnthroSelect label="Paleta" value={anthroFilters.palette} onChange={(value) => updateAnthroFilter("palette", value)} options={anthroPalettes} />
+              </div>
             </section>
           )}
 
@@ -458,6 +484,18 @@ function Fact({ label, value }) {
   );
 }
 
+function AnthroSelect({ label, value, onChange, options }) {
+  return (
+    <div>
+      <label className="label" htmlFor={`anthro-${label}`}>{label}</label>
+      <select id={`anthro-${label}`} className="select" value={value} onChange={(event) => onChange(event.target.value)}>
+        <option value="any">Cualquiera</option>
+        {options.map((option) => <option key={option} value={option}>{option}</option>)}
+      </select>
+    </div>
+  );
+}
+
 function AnthroPanel({ anthro, copyText, regenerateAnthro }) {
   return (
     <section className="min-w-0 space-y-4">
@@ -475,6 +513,7 @@ function AnthroPanel({ anthro, copyText, regenerateAnthro }) {
         <p className="copy-text mt-5 max-w-4xl text-lg leading-8 text-stone-200">{anthro.description}</p>
 
         <div className="mt-5 grid min-w-0 gap-2 lg:grid-cols-2 2xl:grid-cols-4">
+          <Fact label="Genero" value={anthro.gender} />
           <Fact label="Base" value={anthro.species} />
           <Fact label="Cuerpo" value={anthro.bodyType} />
           <Fact label="Anatomia" value={anthro.anatomy} />
@@ -583,24 +622,30 @@ function makeAnthroName() {
   return `${random(prefixes)} ${random(surnames)}`;
 }
 
-function generateAnthroCharacter() {
+function pickFiltered(options, value) {
+  return value && value !== "any" ? value : random(options);
+}
+
+function generateAnthroCharacter(filters = defaultAnthroFilters) {
   const name = makeAnthroName();
-  const species = random(anthroSpecies);
-  const bodyType = random(anthroBodyTypes);
+  const gender = pickFiltered(anthroGenders, filters.gender);
+  const species = pickFiltered(anthroSpecies, filters.species);
+  const bodyType = pickFiltered(anthroBodyTypes, filters.bodyType);
   const anatomy = random(anthroAnatomy);
-  const style = random(anthroStyle);
-  const appeal = random(anthroAppeal);
-  const personality = random(anthroPersonalities);
+  const style = pickFiltered(anthroStyle, filters.style);
+  const appeal = pickFiltered(anthroAppeal, filters.appeal);
+  const personality = pickFiltered(anthroPersonalities, filters.personality);
   const pose = random(anthroPoses);
-  const hook = random(anthroHooks);
-  const palette = random(anthroPalettes);
-  const description = `${name} es un personaje anthro adulto: ${species}, ${bodyType}. Su anatomia expresiva destaca por ${anatomy}. Viste ${style}. Su atractivo visual es sugerente pero no explicito: ${appeal}. Tiene una personalidad ${personality} y funciona como ${hook}. Pose sugerida: ${pose}. Paleta: ${palette}.`;
-  const imagePrompt = `adult anthro ${species}, expressive anatomy, ${bodyType}, ${anatomy}, ${style}, ${appeal}, ${pose}, non-explicit, stylish character design, palette ${palette}`;
+  const hook = pickFiltered(anthroHooks, filters.hook);
+  const palette = pickFiltered(anthroPalettes, filters.palette);
+  const description = `${name} es un personaje anthro adulto de genero/presentacion ${gender}: ${species}, ${bodyType}. Su anatomia expresiva destaca por ${anatomy}. Viste ${style}. Su atractivo visual es sugerente pero no explicito: ${appeal}. Tiene una personalidad ${personality} y funciona como ${hook}. Pose sugerida: ${pose}. Paleta: ${palette}.`;
+  const imagePrompt = `adult anthro character, gender presentation ${gender}, ${species}, expressive anatomy, ${bodyType}, ${anatomy}, ${style}, ${appeal}, ${pose}, non-explicit, stylish character design, palette ${palette}`;
 
   return {
     id: crypto.randomUUID(),
     type: "anthro",
     name,
+    gender,
     species,
     bodyType,
     anatomy,
@@ -645,6 +690,7 @@ function formatAnthroSheet(anthro) {
 ${anthro.description}
 
 ## Rasgos
+- Genero/presentacion: ${anthro.gender}
 - Base: ${anthro.species}
 - Cuerpo: ${anthro.bodyType}
 - Anatomia expresiva: ${anthro.anatomy}
