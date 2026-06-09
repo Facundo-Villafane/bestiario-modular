@@ -358,10 +358,14 @@ export const weaknesses = {
 };
 
 export const anthroSpecies = [
-  "felino de orejas largas", "canido de hocico fino", "zorro urbano", "lobo de pelaje pesado",
-  "ciervo nocturno", "conejo atletico", "murcielago elegante", "reptil de escamas suaves",
-  "dragon menor", "ave rapaz antropomorfa", "caballo estilizado", "cabra de cuernos curvos",
-  "nutria de rio", "mapache de fantasia", "hiena sonriente", "pantera de salon"
+  "lobo", "zorro", "perro", "gato", "tigre", "leon", "pantera", "leopardo",
+  "guepardo", "hiena", "conejo", "liebre", "ciervo", "alce", "cabra", "carnero",
+  "toro", "caballo", "burro", "cerdo", "jabali", "oso", "mapache", "nutria",
+  "castor", "rata", "raton", "murcielago", "ardilla", "huron", "comadreja", "tejon",
+  "zorrino", "canguro", "koala", "panda", "mono", "lemur", "dragon", "lagarto",
+  "serpiente", "cocodrilo", "tortuga", "rana", "salamandra", "cuervo", "aguila",
+  "halcon", "buho", "loro", "pavo real", "gallo", "cisne", "tiburon", "orca",
+  "delfin", "pulpo"
 ];
 
 export const anthroGenders = [
@@ -412,28 +416,18 @@ export const anthroExtraTraits = [
 ];
 
 export const anthroClothingCoverage = [
-  "poca ropa, con fur visible y cobertura no explicita",
-  "ropa ligera que deja ver brazos, hombros, abdomen o piernas con buen gusto",
-  "ropa media, equilibrando silueta, fur visible y accesorios",
-  "ropa ajustada no reveladora, enfocada en silueta y pose",
-  "ropa completa, elegante y estructurada",
-  "capas y accesorios, con menos enfasis en fur visible"
+  "sin ropa",
+  "poca ropa",
+  "ropa ligera",
+  "ropa media",
+  "ropa ajustada",
+  "ropa completa"
 ];
 
 export const anthroStyle = [
-  "top corto, shorts altos, guantes y botas, dejando bastante fur visible sin desnudez",
-  "arnes decorativo sobre top seguro, pantalon bajo y accesorios de escenario",
-  "ropa deportiva ligera con top ajustado, shorts y vendas decorativas",
-  "streetwear nocturno con chaqueta corta abierta, top simple y botas pesadas",
-  "traje de escenario ajustado, elegante y no revelador",
-  "ropa deportiva retro con colores contrastados y fur visible en brazos y piernas",
-  "abrigo largo abierto sobre prendas simples y bien entalladas",
-  "look de club de jazz: guantes, cuello alto y accesorios dorados",
-  "ropa de aventurero urbano con cinturones, bolsillos y telas gastadas",
-  "conjunto minimalista de tela elastica, pensado para movimiento",
-  "uniforme fantastico reinterpretado como moda de pasarela",
-  "camisa amplia metida a medias, pantalon alto y botas limpias",
-  "capas livianas que enfatizan silueta sin mostrar de mas"
+  "mecanico", "deportivo", "callejero", "elegante", "escenario", "fantasia",
+  "goth", "cyberpunk", "verano", "playa", "lenceria no explicita", "uniforme",
+  "aventurero", "bailarin", "motociclista", "minimalista"
 ];
 
 export const anthroAppeal = [
@@ -476,8 +470,9 @@ export const anthroPoses = [
 ];
 
 export const anthroHooks = [
-  "cantante", "mensajero", "duelista", "mecanico", "bailarin", "guardaespaldas elegante",
-  "ilusionista", "capitan", "ladron con codigo moral", "modelo de moda", "chef nocturno", "detective"
+  "mecanico", "bailarin", "cantante", "modelo", "duelista", "guardaespaldas",
+  "detective", "mensajero", "chef", "piloto", "ladron", "ilusionista",
+  "capitan", "boxeador", "tatuador", "barista", "DJ", "explorador"
 ];
 
 export const anthroPalettes = [

@@ -492,10 +492,11 @@ function Fact({ label, value }) {
 }
 
 function AnthroSelect({ label, value, onChange, options }) {
+  const safeValue = value === "any" || options.includes(value) ? value : "any";
   return (
     <div>
       <label className="label" htmlFor={`anthro-${label}`}>{label}</label>
-      <select id={`anthro-${label}`} className="select" value={value} onChange={(event) => onChange(event.target.value)}>
+      <select id={`anthro-${label}`} className="select" value={safeValue} onChange={(event) => onChange(event.target.value)}>
         <option value="any">Cualquiera</option>
         {options.map((option) => <option key={option} value={option}>{option}</option>)}
       </select>
@@ -524,6 +525,7 @@ function AnthroPanel({ anthro, copyText, regenerateAnthro }) {
           <Fact label="Base" value={anthro.species} />
           <Fact label="Cuerpo" value={anthro.bodyType} />
           <Fact label="Ropa" value={anthro.clothingCoverage} />
+          <Fact label="Outfit" value={anthro.outfit} />
           <Fact label="Anatomia" value={anthro.anatomy} />
           <Fact label="Rasgo extra" value={anthro.extraTrait} />
           <Fact label="Estilo" value={anthro.style} />
@@ -632,7 +634,7 @@ function makeAnthroName() {
 }
 
 function pickFiltered(options, value) {
-  return value && value !== "any" ? value : random(options);
+  return value && value !== "any" && options.includes(value) ? value : random(options);
 }
 
 function generateAnthroCharacter(filters = defaultAnthroFilters) {
@@ -651,8 +653,9 @@ function generateAnthroCharacter(filters = defaultAnthroFilters) {
   const hook = pickFiltered(anthroHooks, resolvedFilters.hook);
   const palette = pickFiltered(anthroPalettes, resolvedFilters.palette);
   const extraLine = extraTrait === "sin rasgos extra" ? "No lleva cuernos, alas ni rasgos extra fuera de su base." : `Rasgo extra elegido: ${extraTrait}.`;
-  const description = `${name} es un personaje anthro adulto de genero/presentacion ${gender}: ${species}, ${bodyType}. Lo principal del diseno es la ropa y la pose: usa ${style}; cobertura: ${clothingCoverage}. Pose sugerida: ${pose}. Su anatomia expresiva destaca por ${anatomy}. ${extraLine} Su atractivo visual es sugerente pero no explicito: ${appeal}. Personalidad: ${personality}. Concepto breve: ${hook}. Paleta: ${palette}.`;
-  const imagePrompt = `adult anthro character, gender presentation ${gender}, ${species}, expressive anatomy, ${bodyType}, ${anatomy}, clothing coverage: ${clothingCoverage}, outfit: ${style}, extra trait: ${extraTrait}, pose: ${pose}, visible fur focus, non-explicit, stylish character design, simple plain background, palette ${palette}`;
+  const outfit = makeAnthroOutfit({ clothingCoverage, style, hook });
+  const description = `${name} es un personaje anthro adulto de genero/presentacion ${gender}: ${species}, ${bodyType}. Lo principal del diseno es la pose y lo que viste: ${outfit}. Pose sugerida: ${pose}. Su anatomia expresiva destaca por ${anatomy}. ${extraLine} Su atractivo visual es sugerente pero no explicito: ${appeal}. Personalidad: ${personality}. Rol visual: ${hook}. Paleta: ${palette}.`;
+  const imagePrompt = `adult anthropomorphic ${species} character, gender presentation ${gender}, expressive anatomy, ${bodyType}, ${anatomy}, outfit and coverage: ${outfit}, extra trait: ${extraTrait}, pose: ${pose}, visible fur focus, non-explicit, no explicit nudity, stylish character design, simple plain background, palette ${palette}`;
 
   return {
     id: crypto.randomUUID(),
@@ -663,6 +666,7 @@ function generateAnthroCharacter(filters = defaultAnthroFilters) {
     bodyType,
     clothingCoverage,
     extraTrait,
+    outfit,
     anatomy,
     style,
     appeal,
@@ -673,6 +677,42 @@ function generateAnthroCharacter(filters = defaultAnthroFilters) {
     description,
     imagePrompt
   };
+}
+
+function makeAnthroOutfit({ clothingCoverage, style, hook }) {
+  const roleAccent = {
+    mecanico: "guantes de trabajo, cinturon de herramientas y manchas de grasa estilizadas",
+    bailarin: "vendas, accesorios de escenario y prendas pensadas para movimiento",
+    cantante: "microfono, accesorios brillantes y presencia de escenario",
+    modelo: "accesorios de pasarela y lineas limpias",
+    duelista: "guantes, botas firmes y detalles de combate elegante",
+    guardaespaldas: "arnes utilitario, botas y postura protectora",
+    detective: "tirantes, guantes y accesorios sobrios",
+    mensajero: "bolso cruzado, correas y prendas listas para correr",
+    chef: "delantal reinterpretado y guantes cortos",
+    piloto: "arnes, botas y gafas",
+    ladron: "correas, bolsillos y guantes flexibles",
+    ilusionista: "guantes, capa corta y accesorios brillantes",
+    capitan: "botas, cinturon ancho y abrigo reinterpretado",
+    boxeador: "vendas, shorts y postura de ring",
+    tatuador: "guantes, delantal corto y accesorios metalicos",
+    barista: "delantal bajo, camiseta corta y accesorios simples",
+    DJ: "auriculares, top de escenario y accesorios neon",
+    explorador: "correas, botas y pequenos bolsos"
+  };
+  const accent = roleAccent[hook] || "accesorios simples que sugieren su rol";
+  const styleLine = style === hook ? style : `${style} con lectura de ${hook}`;
+
+  const coverage = {
+    "sin ropa": `sin ropa, con pelaje visible como foco principal y cobertura natural no explicita; solo ${accent}`,
+    "poca ropa": `poca ropa, torso mayormente descubierto o fur visible, cobertura segura no explicita, ${accent}`,
+    "ropa ligera": `ropa ligera, brazos, hombros o abdomen visibles con buen gusto, ${accent}`,
+    "ropa media": `ropa media, silueta clara y fur visible en brazos, cuello o piernas, ${accent}`,
+    "ropa ajustada": `ropa ajustada no reveladora, marcando silueta y postura, ${accent}`,
+    "ropa completa": `ropa completa, estilizada y sexy por corte, pose y confianza, ${accent}`
+  };
+
+  return `${coverage[clothingCoverage] || coverage["ropa media"]}; estilo ${styleLine}`;
 }
 
 function formatSheet(creature, enhanced = "") {
@@ -709,6 +749,7 @@ ${anthro.description}
 - Base: ${anthro.species}
 - Cuerpo: ${anthro.bodyType}
 - Ropa/cobertura: ${anthro.clothingCoverage}
+- Outfit: ${anthro.outfit}
 - Anatomia expresiva: ${anthro.anatomy}
 - Rasgo extra: ${anthro.extraTrait}
 - Estilo: ${anthro.style}
