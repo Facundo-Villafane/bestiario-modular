@@ -55,6 +55,10 @@ function App() {
   const [creature, setCreature] = useStored("creature", () => generateCreature({ regionId: "ibera", elementId: "any" }));
   const [anthroFilters, setAnthroFilters] = useStored("anthroFilters", defaultAnthroFilters);
   const [anthro, setAnthro] = useStored("anthro", () => generateAnthroCharacter(defaultAnthroFilters));
+  const [animalBase, setAnimalBase] = useStored("animalBase", []);
+  const [animalSource, setAnimalSource] = useStored("animalSource", "");
+  const [animalsLoading, setAnimalsLoading] = useState(false);
+  const [animalsError, setAnimalsError] = useState("");
   const [enhanced, setEnhanced] = useStored("enhanced", "");
   const [enhancing, setEnhancing] = useState(false);
   const [enhanceError, setEnhanceError] = useState("");
@@ -69,6 +73,12 @@ function App() {
   const allowedElements = region.elements;
   const effectiveElementId = elementId === "any" || allowedElements.includes(elementId) ? elementId : "any";
   const resolvedAnthroFilters = { ...defaultAnthroFilters, ...anthroFilters };
+  const animalOptions = useMemo(() => {
+    const apiLabels = animalBase
+      .map((animal) => typeof animal === "string" ? animal : animal?.label)
+      .filter(Boolean);
+    return [...new Set([...apiLabels, ...anthroSpecies])].sort((a, b) => a.localeCompare(b, "es"));
+  }, [animalBase]);
 
   const availableElementOptions = useMemo(() => {
     return ["any", ...allowedElements];
@@ -115,7 +125,7 @@ function App() {
   }
 
   function regenerateAnthro() {
-    setAnthro(generateAnthroCharacter(resolvedAnthroFilters));
+    setAnthro(generateAnthroCharacter(resolvedAnthroFilters, animalOptions));
     notify("Personaje anthro generado.");
   }
 
@@ -257,6 +267,26 @@ function App() {
     }
   }
 
+  async function refreshAnimalBase() {
+    setAnimalsLoading(true);
+    setAnimalsError("");
+    try {
+      const response = await fetch("/api/animals");
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || "No se pudo actualizar la base animal.");
+      const nextAnimals = Array.isArray(payload.animals) ? payload.animals : [];
+      if (nextAnimals.length === 0) throw new Error("La API no devolvio animales.");
+      setAnimalBase(nextAnimals);
+      setAnimalSource(`${nextAnimals.length} bases / ${payload.source || "API"}`);
+      notify("Base animal actualizada.");
+    } catch (error) {
+      setAnimalsError(error.message || "No se pudo consultar la API.");
+      notify("Se mantiene la base local.");
+    } finally {
+      setAnimalsLoading(false);
+    }
+  }
+
   function downloadJson() {
     const payload = activeTab === "anthro" ? anthro : { ...creature, enhanced };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
@@ -348,7 +378,7 @@ function App() {
               </p>
               <div className="mt-4 grid gap-3">
                 <AnthroSelect label="Genero" value={resolvedAnthroFilters.gender} onChange={(value) => updateAnthroFilter("gender", value)} options={anthroGenders} />
-                <AnthroSelect label="Base" value={resolvedAnthroFilters.species} onChange={(value) => updateAnthroFilter("species", value)} options={anthroSpecies} />
+                <AnthroSelect label="Base" value={resolvedAnthroFilters.species} onChange={(value) => updateAnthroFilter("species", value)} options={animalOptions} />
                 <AnthroSelect label="Cuerpo" value={resolvedAnthroFilters.bodyType} onChange={(value) => updateAnthroFilter("bodyType", value)} options={anthroBodyTypes} />
                 <AnthroSelect label="Ropa" value={resolvedAnthroFilters.clothingCoverage} onChange={(value) => updateAnthroFilter("clothingCoverage", value)} options={anthroClothingCoverage} />
                 <AnthroSelect label="Estilo" value={resolvedAnthroFilters.style} onChange={(value) => updateAnthroFilter("style", value)} options={anthroStyle} />
@@ -357,6 +387,15 @@ function App() {
                 <AnthroSelect label="Personalidad" value={resolvedAnthroFilters.personality} onChange={(value) => updateAnthroFilter("personality", value)} options={anthroPersonalities} />
                 <AnthroSelect label="Rol" value={resolvedAnthroFilters.hook} onChange={(value) => updateAnthroFilter("hook", value)} options={anthroHooks} />
                 <AnthroSelect label="Paleta" value={resolvedAnthroFilters.palette} onChange={(value) => updateAnthroFilter("palette", value)} options={anthroPalettes} />
+              </div>
+              <div className="mt-4 rounded-lg border border-stone-700 bg-stone-950 p-3">
+                <button className="btn w-full" onClick={refreshAnimalBase} disabled={animalsLoading}>
+                  <RefreshCcw size={18} /> {animalsLoading ? "Actualizando..." : "Actualizar animales"}
+                </button>
+                <p className="copy-text mt-2 text-xs leading-5 text-stone-500">
+                  {animalSource || "Usando base local. La API suma sustento sin agregar calificativos al selector."}
+                </p>
+                {animalsError ? <p className="copy-text mt-2 text-xs leading-5 text-red-300">{animalsError}</p> : null}
               </div>
             </section>
           )}
@@ -637,11 +676,11 @@ function pickFiltered(options, value) {
   return value && value !== "any" && options.includes(value) ? value : random(options);
 }
 
-function generateAnthroCharacter(filters = defaultAnthroFilters) {
+function generateAnthroCharacter(filters = defaultAnthroFilters, speciesOptions = anthroSpecies) {
   const resolvedFilters = { ...defaultAnthroFilters, ...filters };
   const name = makeAnthroName();
   const gender = pickFiltered(anthroGenders, resolvedFilters.gender);
-  const species = pickFiltered(anthroSpecies, resolvedFilters.species);
+  const species = pickFiltered(speciesOptions.length ? speciesOptions : anthroSpecies, resolvedFilters.species);
   const bodyType = pickFiltered(anthroBodyTypes, resolvedFilters.bodyType);
   const clothingCoverage = pickFiltered(anthroClothingCoverage, resolvedFilters.clothingCoverage);
   const extraTrait = pickFiltered(anthroExtraTraits, resolvedFilters.extraTrait);
